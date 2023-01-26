@@ -1,0 +1,136 @@
+let mapleader = " "
+
+" Sets
+set incsearch
+set relativenumber
+set number
+set showmode
+set NERDTree
+set ideawrite=file
+
+sethandler <C-h>
+sethandler <C-l>
+sethandler <C-j>
+sethandler <C-k>
+sethandler <F2>
+sethandler <F4>
+sethandler <C-S-K>
+sethandler <C-S-Up>
+sethandler <C-S-Down>
+sethandler <C-S-Left>
+sethandler <C-S-Right>
+
+nmap <leader><leader> <Nop>
+nmap Q <Nop>
+
+nmap <leader>w :w<cr>
+nmap <leader>W <Action>(SaveAll)
+nmap <leader>q :q<cr>
+
+" Better scrolling
+nmap <C-d> <C-d>zz
+nmap <C-u> <C-u>zz
+
+" Paste without overwriting register
+xnoremap p pgvy
+xnoremap P Pgvy
+
+" Better visual
+vmap J <Action>(MoveLineDown)
+vmap K <Action>(MoveLineUp)
+vmap < <gv
+vmap > >gv
+
+" Buffers
+nmap <S-l> <Action>(NextTab)
+nmap <S-h> <Action>(PreviousTab)
+nmap >b <Action>(MoveEditorToOppositeTabGroup)
+nmap <leader>h <C-w>v
+nmap <leader>v <C-w>s
+nmap <leader>c :q<cr>
+nmap <leader>C :qa!<cr>
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-S-Up> <Action>(StretchSplitToTop)
+nmap <C-S-Down> <Action>(StretchSplitToBottom)
+nmap <C-S-Left> <Action>(StretchSplitToLeft)
+nmap <C-S-Right> <Action>(StretchSplitToRight)
+
+" Nerdtree
+nmap <leader>o :NERDTreeToggle<cr>
+nmap <leader>e :NERDTreeFocus<cr>
+
+" LSP
+nmap K <Action>(QuickJavaDoc)
+nmap <C-S-k> <Action>(QuickImplementations)
+nmap gd <Action>(GotoDeclaration)
+nmap gi <Action>(GotoImplementation)
+nmap go <Action>(GotoTypeDeclaration)
+nmap gr <Action>(FindUsages)
+nmap gp <Action>(GotoSuperMethod)
+nmap gt <Action>(GotoTest)
+nmap <F2> <Action>(RenameElement)
+nmap <leader>lr <Action>(RenameElement)
+nmap <F4> <Action>(QuickActions)
+nmap gl <Action>(ShowErrorDescription)
+nmap <leader>lf <Action>(ReformatCode)
+nmap <leader>ls <Action>(FileStructurePopup)
+nmap <leader>lS <Action>(ActivateStructureToolWindow)
+nmap <space>la <Action>(ShowIntentionActions)
+nmap <space>lD <Action>(ProblemsView.ShowPreview)
+nmap ]d <Action>(GotoNextError)
+nmap [d <Action>(GotoPreviousError)
+nmap ]] <Action>(MethodUp)
+nmap [[ <Action>(MethodDown)
+nmap zc <Action>(CollapseRegion)
+nmap zo <Action>(ExpandRegion)
+nmap zC <Action>(CollapseAllRegions)
+nmap zO <Action>(ExpandAllRegions)
+
+" Telescope
+nmap <leader>fw <Action>(FindInPath)
+nmap <leader>ff <Action>(GotoFile)
+nmap <leader>fo <Action>(RecentFiles)
+
+" Debugger
+nmap <leader>r <Action>(Run)
+nmap <leader>Dc <Action>(Debug)
+nmap <F5> <Action>(Debug)
+nmap <leader>Dp <Action>(Pause)
+nmap <F6> <Action>(Pause)
+nmap <leader>Dr <Action>(Rerun)
+nmap <C-F5> <Action>(Rerun)
+nmap <leader>Dq <Action>(Stop)
+nmap <leader>Db <Action>(ToggleLineBreakpoint)
+nmap <F9> <Action>(ToggleLineBreakpoint)
+nmap <leader>DB <Action>(Debugger.RemoveAllBreakpoints)
+nmap <leader>Do <Action>(StepOver)
+nmap <F10> <Action>(StepOver)
+nmap <leader>Di <Action>(StepInto)
+nmap <F11> <Action>(StepInto)
+nmap <leader>DO <Action>(StepOut)
+nmap <S-F11> <Action>(StepOut)
+nmap <leader>Du <Action>(ActivateDebugToolWindow)
+
+" Tests
+nmap <leader>tR <Action>(RerunFailedTests)
+nmap <leader>tr <Action>(RunClass)
+
+" Terminal
+nmap <leader>tt <Action>(ActivateTerminalToolWindow)
+nmap <leader>tn <Action>(Terminal.OpenInTerminal)
+
+" Git
+nmap <leader>gt <Action>(GitRepositoryActions)
+nmap <leader>gj <Action>(NextDiff)
+nmap <leader>gk <Action>(PreviousDiff)
+nmap <leader>gd <Action>(ChangesView.Diff)
+nmap <leader>gb <Action>(Git.Branches)
+
+" Comments
+nmap <leader>/ <Action>(CommentByLineComment)
+vmap <leader>/ <Action>(CommentByLineComment) 
+"nmap <leader><S-/> <Action>(CommentByBlockComment)
+"vmap <leader><S-/> <Action>(CommentByBlockComment) 
