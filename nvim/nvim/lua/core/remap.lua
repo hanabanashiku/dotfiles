@@ -6,7 +6,6 @@ vim.keymap.set("n", "<leader> ", "<Nop>")
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New file" })
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "Format file" })
 vim.keymap.set("n", "Q", "<Nop>")
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -18,7 +17,7 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 local builtin = require('telescope.builtin')
 vim.keymap.set("n", "<leader>ff", function() builtin.find_files { hidden = true, no_ignore = true } end,
         { desc = "Search files" })
-vim.keymap.set("n", "<leader>fs", function()
+vim.keymap.set("n", "<leader>fw", function()
         builtin.live_grep {
                 additional_args = function(args) return vim.list_extend(args, { "--hidden", "--no-ignore" }) end,
         }
@@ -33,7 +32,6 @@ vim.keymap.set("n", "<leader>gc", function() builtin.git_commits() end, { desc =
 -- NeoTree
 vim.keymap.set("n", "<leader>o", "<cmd>Neotree toggle<cr>")
 vim.keymap.set("n", "<leader>e", "<cmd>Neotree focus<cr>")
-vim.keymap.set("n", "<leader>lS", "<cmd>AerialToggle!<cr>")
 
 -- Buffer
 vim.keymap.set("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer tab" })
@@ -42,8 +40,8 @@ vim.keymap.set("n", ">b", "<cmd>BufferLineMoveNext<cr>", { desc = "Move buffer t
 vim.keymap.set("n", "<b", "<cmd>BufferLineMovePrev<cr>", { desc = "Move buffer tab left" })
 vim.keymap.set("n", "<leader>c", function() require('bufdelete').bufdelete(0, false) end, { desc = "Close buffer" })
 vim.keymap.set("n", "<leader>C", function() require('bufdelete').bufdelete(0, true) end, { desc = "Force close buffer" })
-vim.keymap.set("n", "<leader>h", "<C-w>s", { desc = "Split horizontally" })
-vim.keymap.set("n", "<leader>v", "<C-w>v", { desc = "Split vertically" })
+vim.keymap.set("n", "<leader>v", "<C-w>s", { desc = "Split horizontally" })
+vim.keymap.set("n", "<leader>h", "<C-w>v", { desc = "Split vertically" })
 vim.keymap.set("n", "<C-h>", require("smart-splits").move_cursor_left, { desc = "Move to left split" })
 vim.keymap.set("n", "<C-l>", require("smart-splits").move_cursor_right, { desc = "Move to right split" })
 vim.keymap.set("n", "<C-j>", require("smart-splits").move_cursor_down, { desc = "Move to below split" })
@@ -56,8 +54,28 @@ vim.keymap.set("n", "<C-Left>", require("smart-splits").resize_left, { desc = "R
 vim.keymap.set("n", "<C-Right>", require("smart-splits").resize_right, { desc = "Resize split right" })
 
 -- Diagnostics 
-vim.keymap.set("n", "<leader>lo", "<cmd>TroubleToggle document_diagnostics<cr>", { desc = "Toggle diagnostic window"})
-vim.keymap.set("n", "<leader>lO", "<cmd>TroubleToggle workspace_diagnostics<cr>", { desc = "Toggle diagnostic window"})
+vim.keymap.set("n", "<S-k>", vim.lsp.buf.hover, { desc = "Display hover information"})
+vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "Display signature help"})
+vim.keymap.set("n", "<C-S-k>", vim.lsp.buf.preview_location, { desc = "Quick preview"})        
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Jump to definition"})
+vim.keymap.set("n", "gd", vim.lsp.buf.declaration, { desc = "Jump to declaration"})
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "List implementations"})
+vim.keymap.set("n", "go", vim.lsp.buf.type_definition, { desc = "Jump to type definition"})
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "List all references"})
+vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { desc = "Rename symbol" })
+vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename symbol" })
+vim.keymap.set("n", "<F4>", vim.lsp.buf.code_action, { desc = "Quick actions" })
+vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Quick actions" })
+vim.keymmap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostics" })
+vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "Format document" })
+vim.keymap.set("n", "<leader>ls", "<cmd>AerialToggle! float<cr>", { desc = "Toggle symbols in floating window"})
+vim.keymap.set("n", "<leader>lS", "<cmd>AerialToggle!<cr>", { desc = "Toggle symbols"})
+vim.keymap.set("n", "<leader>ld", "<cmd>TroubleToggle document_diagnostics<cr>", { desc = "Toggle diagnostic window"})
+vim.keymap.set("n", "<leader>lD", "<cmd>TroubleToggle workspace_diagnostics<cr>", { desc = "Toggle diagnostic window"})
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next error"})
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous error"})
+vim.keymap.set("n", "]]", vim.lsp.buf.goto_next, { desc = "Next method"})
+vim.keymap.set("n", "[[", vim.lsp.buf.goto_prev, { desc = "Previous method"})
 
 -- DAP 
 local dap = require('dap')
@@ -71,20 +89,22 @@ vim.keymap.set("n", "<leader>db", function() dap.toggle_breakpoint() end, { desc
 vim.keymap.set("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, { desc = "Conditional breakpoint"})
 vim.keymap.set("n", "<leader>dlp", function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end, { desc = "Log point breakpoint"})
 vim.keymap.set("n", "<leader>dr", function() dap.repl.toggle() end, { desc = "Toggle REPL" })
+vim.keymap.set("n", "<leader>dl", function() dap.run_last() end, { desc = "Run last" })
 
 -- Testing
 local neotest = require('neotest')
-vim.keymap.set("n", "<leader>dtr", function() neotest.run.run() end, { desc = "Run closest test" })
-vim.keymap.set("n", "<leader>dtf", function() neotest.run.run(vim.fn.expand("%")) end, { desc = "Run current file" })
-vim.keymap.set("n", "<leader>dtd", function() neotest.run.run({ strategy = "dap" }) end, { desc = "Debug closest test"})
-vim.keymap.set("n", "<leader>dts", function() neotest.run.stop() end, { desc = "Stop running test"})
-vim.keymap.set("n", "<leader>dta", function() neotest.run.attach() end, { desc = "Attach closest test" })
-vim.keymap.set("n", "<leader>dte", function() neotest.summary.toggle() end, { desc = "Toggle test explorer"})
-vim.keymap.set("n", "<leader>dto", function() neotest.output_panel.toggle() end, { desc = "Toggle test output panel"})
-vim.keymap.set("n", "<leader>dtj", function() neotest.jump.next() end, { desc = "Jump to next test"})
-vim.keymap.set("n", "<leader>dtk", function() neotest.jump.prev() end, { desc = "Jump to previous test"})
-vim.keymap.set("n", "<leader>dtJ", function() neotest.jump.next({ status = "failed" }) end, { desc = "Jump to next failed test"})
-vim.keymap.set("n", "<leader>dtK", function() neotest.jump.prev({ status = "failed" }) end, { desc = "Jump to previous failed test"})
+vim.keymap.set("n", "<leader>tr", function() neotest.run.run() end, { desc = "Run closest test" })
+vim.keymap.set("n", "<leader>tR", function() neotest.run.run({ suite = true }) end, { desc = "Run closest test" })
+vim.keymap.set("n", "<leader>tF", function() neotest.run.run(vim.fn.expand("%")) end, { desc = "Run current file" })
+vim.keymap.set("n", "<leader>td", function() neotest.run.run({ strategy = "dap" }) end, { desc = "Debug closest test"})
+vim.keymap.set("n", "<leader>ts", function() neotest.run.stop() end, { desc = "Stop running test"})
+vim.keymap.set("n", "<leader>ta", function() neotest.run.attach() end, { desc = "Attach closest test" })
+vim.keymap.set("n", "<leader>te", function() neotest.summary.toggle() end, { desc = "Toggle test explorer"})
+vim.keymap.set("n", "<leader>to", function() neotest.output_panel.toggle() end, { desc = "Toggle test output panel"})
+vim.keymap.set("n", "]t", function() neotest.jump.next() end, { desc = "Jump to next test"})
+vim.keymap.set("n", "[t", function() neotest.jump.prev() end, { desc = "Jump to previous test"})
+vim.keymap.set("n", "]T", function() neotest.jump.next({ status = "failed" }) end, { desc = "Jump to next failed test"})
+vim.keymap.set("n", "[T", function() neotest.jump.prev({ status = "failed" }) end, { desc = "Jump to previous failed test"})
 
 -- Spotify
 vim.keymap.set("n", "<leader>sp", "<cmd>SpToggle<cr>", { desc = "Play/pause" })
@@ -128,6 +148,7 @@ vim.keymap.set("n", "<leader>t7v", "<cmd>7ToggleTerm direction=vertical<cr>")
 vim.keymap.set("n", "<leader>t8v", "<cmd>8ToggleTerm direction=vertical<cr>")
 vim.keymap.set("n", "<leader>t9v", "<cmd>9ToggleTerm direction=vertical<cr>")
 vim.keymap.set("n", "<leader>t0v", "<cmd>0ToggleTerm direction=vertical<cr>")
+
 -- Git
 vim.keymap.set("n", "<leader>gj", function() require("gitsigns").next_hunk() end, { desc = "Next git hunk" })
 vim.keymap.set("n", "<leader>gk", function() require("gitsigns").prev_hunk() end, { desc = "Previous git hunk" })
@@ -152,4 +173,4 @@ vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<leader>/", "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
         { desc = "Toggle comment line" })
-vim.keymap.set("v", "<leader>c", function() require("bufdelete").bufdelete(0, true) end, { desc = "Force close buffer" })
+

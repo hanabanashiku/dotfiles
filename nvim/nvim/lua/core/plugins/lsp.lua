@@ -21,7 +21,6 @@ lsp.ensure_installed({
   "texlab",
   "sumneko_lua",
   "marksman",
-  "spectral", -- openapi
   "pyright",
   "sqlls",
   "tailwindcss"

@@ -1,7 +1,6 @@
 local lsp = require('lsp-zero')
 local cmp = require('cmp')
 local lspkind = require('lspkind')
-local luasnip = require('luasnip')
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
 lsp.preset('recommended')
@@ -21,7 +20,6 @@ lsp.ensure_installed({
   "texlab",
   "sumneko_lua",
   "marksman",
-  "spectral", -- openapi
   "pyright",
   "sqlls",
   "tailwindcss"
