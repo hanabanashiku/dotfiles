@@ -26,6 +26,8 @@ vim.cmd "set noshowmode"
 vim.opt.termguicolors = true
 vim.opt.colorcolumn = "80"
 
+vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 vim.api.nvim_create_autocmd("FileType *", {
     callback = function()
         vim.cmd [[ set formatoptions-=cro]]
