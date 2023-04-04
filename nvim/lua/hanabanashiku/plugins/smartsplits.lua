@@ -6,5 +6,4 @@ require('smart-splits').setup({
         "prompt"
     },
     ignored_buftypes = {"nofile"}
-
 })

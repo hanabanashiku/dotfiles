@@ -1,0 +1,182 @@
+require 'mason'.setup()
+require 'mason-lspconfig'.setup {
+    ensure_installed = {
+        "lua_ls", "clangd", "omnisharp", "cssls", "emmet_ls", "jsonls",
+        "tsserver", "pyright", "sqlls", "lemminx", "yamlls"
+    }
+}
+
+require 'goto-preview'.setup {}
+
+-- Fix Undefined global 'vim'
+require 'neodev'.setup {
+    library = {
+        plugins = { "neotest" },
+        types = true
+    }
+}
+
+local null_ls = require 'null-ls'
+null_ls.setup {
+    sources = {
+        null_ls.builtins.formatting.stylua,
+        null_ls.builtins.diagnostics.eslint
+    }
+}
+
+local cmp = require 'cmp'
+local lspkind = require 'lspkind'
+cmp.setup({
+    enabled = true,
+    preselect = cmp.PreselectMode.None,
+    confirmation = {
+        completeopt = { 'menu', 'menuone', 'noinsert', 'noselect' },
+    },
+    formatting = {
+        format = lspkind.cmp_format({
+            mode = 'symbol',
+            maxwidth = 50,
+            ellipsis_char = '…'
+        })
+    },
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+        end,
+    },
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+    }, {
+        { name = 'buffer' },
+    })
+})
+
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+        { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+    }, {
+        { name = 'buffer' },
+    })
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = 'buffer' }
+    }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+        { name = 'path' }
+    }, {
+        { name = 'cmdline' }
+    })
+})
+
+-- Insert ( after selec function on method item
+cmp.event:on(
+    'confirm_done',
+    require'nvim-autopairs.completion.cmp'.on_confirm_done()
+)
+
+local signs = {
+    Error = " ",
+    Warn = " ",
+    Hint = " ",
+    Info = " "
+}
+
+for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
+-- Set up lspconfig.
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+require("mason-lspconfig").setup_handlers {
+    function(server_name) -- default handler (optional)
+        require("lspconfig")[server_name].setup {
+            capabilities = capabilities
+        }
+    end,
+    ["lua_ls"] = function()
+        require("lspconfig").lua_ls.setup {
+            capabilities = capabilities,
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        globals = { 'vim' }
+                    },
+                    workspace = {
+                        checkThirdParty = false,
+                    },
+                    telemetry = {
+                        enable = false,
+                    },
+                }
+            }
+        }
+    end,
+    ["jsonls"] = function()
+        require 'lspconfig'.jsonls.setup {
+            capabilities = capabilities,
+            settings = {
+                json = {
+                    schemas = require 'schemastore'.json.schemas(),
+                    validate = { enable = true }
+                },
+            },
+        }
+    end,
+    ["yamlls"] = function()
+        require 'lspconfig'.yamlls.setup {
+            capabilities = capabilities,
+            settings = {
+                yaml = {
+                    schemas = require 'schemastore'.yaml.schemas(),
+                }
+            }
+        }
+    end,
+    ["omnisharp"] = function()
+        local pid = vim.fn.getpid()
+        local omnisharp_bin = vim.fn.expand("$HOME/.omnisharp/OmniSharp")
+
+        require 'lspconfig'.omnisharp.setup {
+            capabilities = capabilities,
+            on_attach = function(_, bufnr)
+                vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+            end,
+            handlers = {
+                ["textDocument/definition"] = require'omnisharp_extended'.handler,
+            },
+
+            cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
+
+            enable_roslyn_analyzers = false,
+            organize_imports_on_format = true,
+            enable_import_completion = true,
+            sdk_include_prereleases = true
+        }
+    end
+}
+
+require("luasnip.loaders.from_vscode").lazy_load()

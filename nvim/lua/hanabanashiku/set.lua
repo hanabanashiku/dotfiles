@@ -10,7 +10,6 @@ vim.opt.expandtab = true
 
 vim.opt.smartindent = true
 vim.opt.wrap = false
-vim.opt.colorcolumn = "80"
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -23,3 +22,12 @@ vim.opt.incsearch = true
 vim.opt.scrolloff = 8
 vim.opt.updatetime = 750
 vim.cmd "set noshowmode"
+
+vim.opt.termguicolors = true
+vim.opt.colorcolumn = "80"
+
+vim.api.nvim_create_autocmd("FileType *", {
+    callback = function()
+        vim.cmd [[ set formatoptions-=cro]]
+    end
+})

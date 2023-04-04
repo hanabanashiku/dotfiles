@@ -1,5 +1,0 @@
-require("core.packer")
-require("core.colors")
-require("core.plugins")
-require("core.set")
-require("core.remap")
