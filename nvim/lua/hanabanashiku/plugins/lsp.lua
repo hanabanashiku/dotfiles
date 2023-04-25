@@ -16,6 +16,10 @@ require 'neodev'.setup {
     }
 }
 
+require 'lspkind'.init {
+    preset = 'codicons'
+}
+
 local null_ls = require 'null-ls'
 null_ls.setup {
     sources = {
@@ -26,13 +30,19 @@ null_ls.setup {
 
 local cmp = require 'cmp'
 local lspkind = require 'lspkind'
+
 cmp.setup({
     enabled = true,
     preselect = cmp.PreselectMode.None,
     confirmation = {
-        completeopt = { 'menu', 'menuone', 'noinsert', 'noselect' },
+        completeopt = { 'menu', 'preview', 'menuone' }
+    },
+    confirm_opts = {
+        behavior = cmp.ConfirmBehavior.Replace,
+        select = false
     },
     formatting = {
+        fields = { "kind", "abbr", "menu" },
         format = lspkind.cmp_format({
             mode = 'symbol',
             maxwidth = 50,
@@ -49,17 +59,19 @@ cmp.setup({
         documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<C-j>'] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+        ['<C-k>'] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+        ['<Up>'] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
+        ['<Down>'] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
     }),
     sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-    }, {
-        { name = 'buffer' },
+        { name = 'nvim_lsp', priority = 1000 },
+        { name = 'luasnip', priority = 750 },
     })
 })
 
@@ -67,8 +79,6 @@ cmp.setup({
 cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
         { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-    }, {
-        { name = 'buffer' },
     })
 })
 
@@ -84,13 +94,12 @@ cmp.setup.cmdline({ '/', '?' }, {
 cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        { name = 'path' }
-    }, {
-        { name = 'cmdline' }
+        { name = 'cmdline', priority = 1000 },
+        { name = 'path', priority = 750 },
     })
 })
 
--- Insert ( after selec function on method item
+-- Insert ( after select function on method item
 cmp.event:on(
     'confirm_done',
     require'nvim-autopairs.completion.cmp'.on_confirm_done()

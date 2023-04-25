@@ -4,6 +4,7 @@ vim.keymap.set("n", "Q", "<Nop>")
 
 -- Files
 vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
+vim.keymap.set("n", "<leader>Q", "<cmd>qa!<cr>", { desc = "Force quit" })
 vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New file" })
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 
@@ -64,20 +65,28 @@ vim.keymap.set("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buff
 vim.keymap.set("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer tab" })
 vim.keymap.set("n", ">b", "<cmd>BufferLineMoveNext<cr>", { desc = "Move buffer tab right" })
 vim.keymap.set("n", "<b", "<cmd>BufferLineMovePrev<cr>", { desc = "Move buffer tab left" })
-vim.keymap.set("n", "<leader>c", "<cmd>q<cr>", { desc = "Close buffer" })
-vim.keymap.set("n", "<leader>C", "<cmd>qa!<cr>", { desc = "Force close buffer" })
+vim.keymap.set("n", "<leader>c", function() require'bufdelete'.bufdelete(0) end, { desc = "Close buffer" })
+vim.keymap.set("n", "<leader>C", function() require'bufdelete'.bufdelete(0, true) end, { desc = "Force close buffer" })
+vim.keymap.set("n", "<leader>CE", "<cmd>%bd|e#<cr>", { desc = "Force close all buffers except current" })
 vim.keymap.set("n", "<leader>v", "<C-w>s", { desc = "Split horizontally" })
 vim.keymap.set("n", "<leader>h", "<C-w>v", { desc = "Split vertically" })
+
+if vim.loop.os_uname().sysname == "Darwin" then
+    vim.keymap.set("n", "<D-Up>", require("smart-splits").resize_up, { desc = "Resize split up" })
+    vim.keymap.set("n", "<D-Down>", require("smart-splits").resize_down, { desc = "Resize split down" })
+    vim.keymap.set("n", "<D-Left>", require("smart-splits").resize_left, { desc = "Resize split left" })
+    vim.keymap.set("n", "<D-Right>", require("smart-splits").resize_right, { desc = "Resize split right" })
+else
+    vim.keymap.set("n", "<C-Up>", require("smart-splits").resize_up, { desc = "Resize split up" })
+    vim.keymap.set("n", "<C-Down>", require("smart-splits").resize_down, { desc = "Resize split down" })
+    vim.keymap.set("n", "<C-Left>", require("smart-splits").resize_left, { desc = "Resize split left" })
+    vim.keymap.set("n", "<C-Right>", require("smart-splits").resize_right, { desc = "Resize split right" })
+end
+
 vim.keymap.set("n", "<C-h>", require("smart-splits").move_cursor_left, { desc = "Move to left split" })
 vim.keymap.set("n", "<C-l>", require("smart-splits").move_cursor_right, { desc = "Move to right split" })
 vim.keymap.set("n", "<C-j>", require("smart-splits").move_cursor_down, { desc = "Move to below split" })
 vim.keymap.set("n", "<C-k>", require("smart-splits").move_cursor_up, { desc = "Move to above s plit" })
-vim.keymap.set("n", "<C-Up>", require("smart-splits").resize_up, { desc = "Resize split up" })
-vim.keymap.set("n", "<C-Down>", require("smart-splits").resize_down, { desc = "Resize split down" })
-vim.keymap.set("n", "<C-Up>", require("smart-splits").resize_up, { desc = "Resize split up" })
-vim.keymap.set("n", "<C-Down>", require("smart-splits").resize_down, { desc = "Resize split down" })
-vim.keymap.set("n", "<C-Left>", require("smart-splits").resize_left, { desc = "Resize split left" })
-vim.keymap.set("n", "<C-Right>", require("smart-splits").resize_right, { desc = "Resize split right" })
 
 -- LSP
 local preview = require 'goto-preview'
@@ -152,7 +161,6 @@ vim.keymap.set("n", "<leader>th", "<cmd>ToggleTerm direction=horizontal<cr>")
 vim.keymap.set("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<cr>")
 vim.keymap.set("n", "<leader>tw", "<cmd>term<cr>")
 vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTermToggleAll<cr>")
-vim.keymap.set("t", "<Esc>", "<c-\\><c-n>")
 vim.keymap.set("t", "<C-h>", "<c-\\><c-n><c-w>h")
 vim.keymap.set("t", "<C-j>", "<c-\\><c-n><c-w>j")
 vim.keymap.set("t", "<C-k>", "<c-\\><c-n><c-w>k")

@@ -2,63 +2,65 @@ local dap = require 'dap'
 local masonDap = require 'mason-nvim-dap'
 
 masonDap.setup {
-    ensure_installed = { 'coreclr', 'lldb' }
-}
+    ensure_installed = { 'coreclr', 'lldb' },
+    handlers = {
+        function(config)
+            masonDap.default_setup(config)
+        end,
 
-masonDap.setup_handlers {
-    function(source_name)
-        require 'mason-nvim-dap.automatic_setup' (source_name)
-    end,
-
-    coreclr = function()
-        dap.adapters.coreclr = {
-            type = 'executable',
-            command = 'netcoredbg',
-            args = { '--interpreter=vscode' }
-        }
-
-        dap.configurations.cs = {
-            {
-                type = "coreclr",
-                name = "launch - netcoredbg",
-                request = "launch",
-                program = function()
-                    return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
-                end
+        coreclr = function(config)
+            config.adapters = {
+                type = 'executable',
+                command = 'netcoredbg',
+                args = { '--interpreter=vscode' }
             }
-        }
-    end,
 
-    codelldb = function()
-        dap.adapters.lldb = {
-            type = 'executable',
-            command = 'lldb-vscode',
-            name = 'lldb'
-        }
+            config.configurations.cs = {
+                {
+                    type = "coreclr",
+                    name = "launch - netcoredbg",
+                    request = "launch",
+                    program = function()
+                        return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+                    end
+                }
+            }
+            masonDap.default_setup(config)
+        end,
 
-        dap.configurations.cpp = {
-            name = 'Launch',
-            type = 'lldb',
-            request = 'launch',
-            program = function()
-                return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-            end,
-            cwd = '${workspaceFolder}',
-            stopOnEntry = false,
-            args = {}
-        }
+        codelldb = function(config)
+            config.adapters.lldb = {
+                type = 'executable',
+                command = 'lldb-vscode',
+                name = 'lldb'
+            }
 
-        dap.configurations.env = function()
-            local variables = {}
-            for k, v in pairs(vim.fn.environ()) do
-                table.insert(variables, string.format("%s=%s", k, v))
+            config.configurations.cpp = {
+                name = 'Launch',
+                type = 'lldb',
+                request = 'launch',
+                program = function()
+                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+                args = {}
+            }
+
+            config.configurations.env = function()
+                local variables = {}
+                for k, v in pairs(vim.fn.environ()) do
+                    table.insert(variables, string.format("%s=%s", k, v))
+                end
+                return variables
             end
-            return variables
-        end
 
-        dap.configurations.c = dap.configurations.cpp
-        dap.configurations.rust = dap.configurations.cpp
-    end
+            config.configurations.c = dap.configurations.cpp
+            config.configurations.rust = dap.configurations.cpp
+
+            masonDap.default_setup(config)
+        end
+    }
 }
 
 require 'dap-vscode-js'.setup {

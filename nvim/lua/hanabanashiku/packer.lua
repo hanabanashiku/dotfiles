@@ -30,13 +30,17 @@ local packer_config = function(use)
     use("hrsh7th/cmp-path")
     use("hrsh7th/cmp-cmdline")
     use("hrsh7th/nvim-cmp")
-    use("L3MON4D3/LuaSnip")
+    use("petertriho/cmp-git")
     use("saadparwaiz1/cmp_luasnip")
     use("rafamadriz/friendly-snippets")
     use("onsails/lspkind.nvim")
     use("b0o/schemastore.nvim")
     use("rmagatti/goto-preview")
     use("folke/neodev.nvim")
+    use {
+        "L3MON4D3/LuaSnip",
+        build = "make install_jsregexp"
+    }
     use({
         "kylechui/nvim-surround",
         config = function()
@@ -68,6 +72,9 @@ local packer_config = function(use)
             require("nvim-ts-autotag").setup({})
         end,
     })
+    -- use {
+    --     'doggy8088/netcore-snippets'
+    -- }
 
     -- UI
     use({ "catppuccin/nvim", as = "catppuccin" })
@@ -100,6 +107,7 @@ local packer_config = function(use)
             require("bufferline").setup({})
         end,
     })
+    use 'famiu/bufdelete.nvim'
     use("mrjones2014/smart-splits.nvim")
     use({
         "nvim-neo-tree/neo-tree.nvim",
