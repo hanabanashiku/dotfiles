@@ -163,6 +163,7 @@ local packer_config = function(use)
             "nvim-neotest/neotest-python",
             "haydenmeade/neotest-jest",
             "rouge8/neotest-rust",
+            "marilari88/neotest-vitest"
         },
     })
 

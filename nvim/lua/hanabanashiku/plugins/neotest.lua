@@ -5,6 +5,7 @@ require 'neotest'.setup {
         },
         require 'neotest-python',
         require 'neotest-jest',
-        require 'neotest-rust'
+        require 'neotest-rust',
+        require 'neotest-vitest'
     }
 }
