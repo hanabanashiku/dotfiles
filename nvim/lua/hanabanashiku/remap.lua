@@ -102,9 +102,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
         vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
         vim.keymap.set("n", "<C-S-k>", preview.goto_preview_definition, opts)
-        vim.keymap.set("n", "<space>lf", function()
-            vim.lsp.buf.format { async = true }
-        end, opts)
+        vim.keymap.set("n", "<space>lf", "<cmd>Neoformat<cr>")
         vim.keymap.set("n", "<space>lr", vim.lsp.buf.rename, opts)
         vim.keymap.set("n", "<space>la", vim.lsp.buf.code_action, opts)
         vim.keymap.set("n", "<space>ld", vim.diagnostic.open_float, opts)

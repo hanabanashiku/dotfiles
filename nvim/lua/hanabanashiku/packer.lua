@@ -72,6 +72,7 @@ local packer_config = function(use)
             require("nvim-ts-autotag").setup({})
         end,
     })
+    use 'sbdchd/neoformat'
     -- use {
     --     'doggy8088/netcore-snippets'
     -- }
