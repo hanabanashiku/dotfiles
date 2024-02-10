@@ -6,7 +6,7 @@ local packer_config = function(use)
     -- Fuzzy search
     use({
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.0",
+        tag = "0.1.5",
         requires = { { "nvim-lua/plenary.nvim" } },
     })
 
@@ -20,11 +20,10 @@ local packer_config = function(use)
 
     -- LSP
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
-    use("nvim-treesitter/nvim-treesitter-context")
+    use("nvim-treesitter/nvim-treesitter-context") -- float scope at top of page
     use("williamboman/mason.nvim")
     use("williamboman/mason-lspconfig.nvim")
     use("neovim/nvim-lspconfig")
-    use({ "jose-elias-alvarez/null-ls.nvim", requires = "nvim-lua/plenary.nvim" })
     use("hrsh7th/cmp-nvim-lsp")
     use("hrsh7th/cmp-buffer")
     use("hrsh7th/cmp-path")
@@ -33,10 +32,13 @@ local packer_config = function(use)
     use("petertriho/cmp-git")
     use("saadparwaiz1/cmp_luasnip")
     use("rafamadriz/friendly-snippets")
-    use("onsails/lspkind.nvim")
     use("b0o/schemastore.nvim")
-    use("rmagatti/goto-preview")
-    use("folke/neodev.nvim")
+    use({
+        "rmagatti/goto-preview",
+        config = function()
+            require'goto-preview'.setup {}
+        end
+    })
     use {
         "L3MON4D3/LuaSnip",
         build = "make install_jsregexp"
@@ -53,54 +55,18 @@ local packer_config = function(use)
             require("Comment").setup({})
         end,
     })
-    use("hoffs/omnisharp-extended-lsp.nvim")
-    use({
-        "nmac427/guess-indent.nvim",
-        config = function()
-            require("guess-indent").setup({})
-        end,
-    })
-    use({
-        "windwp/nvim-autopairs",
-        config = function()
-            require("nvim-autopairs").setup({})
-        end,
-    })
-    use({
-        "windwp/nvim-ts-autotag",
-        config = function()
-            require("nvim-ts-autotag").setup({})
-        end,
-    })
-    use 'sbdchd/neoformat'
-    -- use {
-    --     'doggy8088/netcore-snippets'
-    -- }
 
     -- UI
-    use({ "catppuccin/nvim", as = "catppuccin" })
     use("kyazdani42/nvim-web-devicons")
-    use("hood/popui.nvim")
+    use("onsails/lspkind.nvim")
     use({
-        "nvim-lualine/lualine.nvim",
-        requires = { "arkav/lualine-lsp-progress" },
-    })
-    use({
-        "lukas-reineke/indent-blankline.nvim",
-        config = function()
-            require("indent_blankline").setup({})
-        end,
-    })
-    use({
-        "folke/trouble.nvim",
-        requires = "nvim-tree/nvim-web-devicons",
-        config = function()
-            require("trouble").setup({
-                -- your configuration comes here
-                -- or leave it empty to use the default settings
-                -- refer to the configuration section below
-            })
-        end,
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v3.x",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "MunifTanjim/nui.nvim",
+            "3rd/image.nvim"
+        },
     })
     use({
         "akinsho/bufferline.nvim",
@@ -111,64 +77,54 @@ local packer_config = function(use)
     use 'famiu/bufdelete.nvim'
     use("mrjones2014/smart-splits.nvim")
     use({
-        "nvim-neo-tree/neo-tree.nvim",
-        branch = "v2.x",
-        requires = {
-            "nvim-lua/plenary.nvim",
-            -- "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-            "MunifTanjim/nui.nvim",
-        },
-    })
-    use({
         "stevearc/aerial.nvim",
         config = function()
             require("aerial").setup()
         end,
     })
     use({
-        "nvchad/nvim-colorizer.lua",
+        "nvim-lualine/lualine.nvim",
+        requires = { "arkav/lualine-lsp-progress" }
+    })
+    use({
+        'folke/trouble.nvim',
+         config = function()
+            require'trouble'.setup({})
+         end
+    })
+    use({
+        'norcalli/nvim-colorizer.lua',
         config = function()
-            require("colorizer").setup({})
-        end,
+            require'colorizer'.setup()
+        end
     })
+     use("HiPhish/nvim-ts-rainbow2")
+
+    -- Formatting
     use({
-        "akinsho/toggleterm.nvim",
+        'lukas-reineke/indent-blankline.nvim',
         config = function()
-            require("toggleterm").setup({})
-        end,
+            require('ibl').setup()
+        end
     })
-    use("rmagatti/auto-session")
-    use("HiPhish/nvim-ts-rainbow2")
+    use {
+	"windwp/nvim-autopairs",
+    config = function() require("nvim-autopairs").setup {} end
+}
 
-    -- DAP
-    use("mfussenegger/nvim-dap")
-    use("jay-babu/mason-nvim-dap.nvim")
-    use("rcarriga/nvim-dap-ui")
-    use("theHamsta/nvim-dap-virtual-text")
-    use("mxsdev/nvim-dap-vscode-js")
-    use("mfussenegger/nvim-dap-python")
+    -- Language specific
+    use("folke/neodev.nvim")
     use({
-        "microsoft/vscode-js-debug",
-        opt = true,
-        run = "npm install --legacy-peer-deps && npm run compile",
+        "pmizio/typescript-tools.nvim",
+        requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+        config = function()
+            require("typescript-tools").setup {}
+        end
     })
+    use("hoffs/omnisharp-extended-lsp.nvim")
 
-    -- Testing
-    use({
-        "nvim-neotest/neotest",
-        requires = {
-            "nvim-lua/plenary.nvim",
-            "nvim-treesitter/nvim-treesitter",
-            "antoinemadec/FixCursorHold.nvim",
-            "Issafalcon/neotest-dotnet",
-            "nvim-neotest/neotest-python",
-            "haydenmeade/neotest-jest",
-            "rouge8/neotest-rust",
-            "marilari88/neotest-vitest"
-        },
-    })
+    
 
-    use("ThePrimeagen/vim-be-good")
 end
 
 local ensure_packer = function()

@@ -1,5 +1,5 @@
 require'neo-tree'.setup {
-    filesystem = {
+     filesystem = {
         never_show = {
             ".DS_Store",
             "thumbs.db"

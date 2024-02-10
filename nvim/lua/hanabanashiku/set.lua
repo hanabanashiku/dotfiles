@@ -30,9 +30,3 @@ vim.opt.spell = true
 vim.opt.spelllang = { 'en_us'}
 
 vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
-vim.api.nvim_create_autocmd("FileType *", {
-    callback = function()
-        vim.cmd [[ set formatoptions-=cro]]
-    end
-})

@@ -1,31 +1,25 @@
 require 'mason'.setup()
 require 'mason-lspconfig'.setup {
     ensure_installed = {
-        "lua_ls", "clangd", "omnisharp", "cssls", "emmet_ls", "jsonls",
-        "tsserver", "pyright", "sqlls", "lemminx", "yamlls"
+        lua_ls, bashls, clangd, csharp_ls, eslint, gopls, graphql,
+        html, jsonls, java_language_server, tsserver,
+        marksman, spectral, phpactor, pyright, rust_analyzer,
+        sqlls, svelte, tailwindcss, lemminx, yamlls, prismals,
+        dockerls, docker_compose_language_service
     }
 }
 
-require 'goto-preview'.setup {}
-
--- Fix Undefined global 'vim'
-require 'neodev'.setup {
+-- Fix undefined global 'vim'
+require'neodev'.setup {
     library = {
         plugins = { "neotest" },
         types = true
     }
 }
 
+-- vscode-like lsp icons
 require 'lspkind'.init {
     preset = 'codicons'
-}
-
-local null_ls = require 'null-ls'
-null_ls.setup {
-    sources = {
-        null_ls.builtins.formatting.stylua,
-        null_ls.builtins.diagnostics.eslint
-    }
 }
 
 local cmp = require 'cmp'
@@ -105,20 +99,9 @@ cmp.event:on(
     require'nvim-autopairs.completion.cmp'.on_confirm_done()
 )
 
-local signs = {
-    Error = " ",
-    Warn = " ",
-    Hint = " ",
-    Info = " "
-}
-
-for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local schemastore = require'schemastore'
 
 require("mason-lspconfig").setup_handlers {
     function(server_name) -- default handler (optional)
@@ -149,7 +132,7 @@ require("mason-lspconfig").setup_handlers {
             capabilities = capabilities,
             settings = {
                 json = {
-                    schemas = require 'schemastore'.json.schemas(),
+                    schemas = schemastore.json.schemas(),
                     validate = { enable = true }
                 },
             },
@@ -160,7 +143,7 @@ require("mason-lspconfig").setup_handlers {
             capabilities = capabilities,
             settings = {
                 yaml = {
-                    schemas = require 'schemastore'.yaml.schemas(),
+                    schemas = schemastore.yaml.schemas(),
                 }
             }
         }

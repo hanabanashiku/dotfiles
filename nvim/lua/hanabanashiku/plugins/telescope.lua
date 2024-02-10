@@ -6,10 +6,14 @@ require 'telescope'.setup {
             "obj",
             "lib",
             "dist",
-            "lib",
             "build",
             ".cargo",
-            ".parcel-cache"
+            ".cache",
+            ".vite",
+            ".parcel-cache",
+            "package-lock.json",
+            ".DS_Store",
+            ".git"
         }
     }
 }
