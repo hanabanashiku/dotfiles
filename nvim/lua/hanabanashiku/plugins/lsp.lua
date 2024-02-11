@@ -1,11 +1,11 @@
 require 'mason'.setup()
 require 'mason-lspconfig'.setup {
     ensure_installed = {
-        lua_ls, bashls, clangd, csharp_ls, eslint, gopls, graphql,
-        html, jsonls, java_language_server, tsserver,
-        marksman, spectral, phpactor, pyright, rust_analyzer,
-        sqlls, svelte, tailwindcss, lemminx, yamlls, prismals,
-        dockerls, docker_compose_language_service
+        'html', 'jsonls', 'tsserver',
+        'lua_ls', 'bashls', 'clangd', 'eslint', 'graphql',
+        'marksman', 'spectral', 'pyright', 'rust_analyzer',
+        'sqlls', 'svelte', 'tailwindcss', 'lemminx', 'yamlls', 'prismals',
+        'dockerls', 'docker_compose_language_service'
     }
 }
 
@@ -150,15 +150,16 @@ require("mason-lspconfig").setup_handlers {
     end,
     ["omnisharp"] = function()
         local pid = vim.fn.getpid()
-        local omnisharp_bin = vim.fn.expand("$HOME/.omnisharp/OmniSharp")
+        local omnisharp_bin = vim.fn.stdpath('data')..'/site/omnisharp/OmniSharp'
 
         require 'lspconfig'.omnisharp.setup {
             capabilities = capabilities,
             on_attach = function(_, bufnr)
                 vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
             end,
+
+            ["textDocument/definition"] = require'omnisharp_extended'.handler,
             handlers = {
-                ["textDocument/definition"] = require'omnisharp_extended'.handler,
             },
 
             cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },

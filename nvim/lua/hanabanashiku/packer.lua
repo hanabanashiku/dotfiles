@@ -123,7 +123,6 @@ local packer_config = function(use)
     })
     use("hoffs/omnisharp-extended-lsp.nvim")
 
-    
 
 end
 
