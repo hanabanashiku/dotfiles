@@ -2,31 +2,31 @@ local dap = require 'dap'
 local masonDap = require 'mason-nvim-dap'
 
 masonDap.setup {
-    ensure_installed = { 'coreclr', 'lldb' },
+    ensure_installed = { 'lldb' },
     handlers = {
         function(config)
             masonDap.default_setup(config)
         end,
 
-        coreclr = function(config)
-            config.adapters = {
-                type = 'executable',
-                command = 'netcoredbg',
-                args = { '--interpreter=vscode' }
-            }
-
-            config.configurations.cs = {
-                {
-                    type = "coreclr",
-                    name = "launch - netcoredbg",
-                    request = "launch",
-                    program = function()
-                        return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
-                    end
-                }
-            }
-            masonDap.default_setup(config)
-        end,
+        -- coreclr = function(config)
+        --     config.adapters = {
+        --         type = 'executable',
+        --         command = 'netcoredbg',
+        --         args = { '--interpreter=vscode' }
+        --     }
+        --
+        --     config.configurations.cs = {
+        --         {
+        --             type = "coreclr",
+        --             name = "launch - netcoredbg",
+        --             request = "launch",
+        --             program = function()
+        --                 return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+        --             end
+        --         }
+        --     }
+        --     masonDap.default_setup(config)
+        -- end,
 
         codelldb = function(config)
             config.adapters.lldb = {
@@ -119,8 +119,6 @@ require 'dap-python'.setup '~/.virtualenvs/debugpy/bin/python'
 -- UI
 local dapui = require 'dapui'
 dapui.setup {}
-
-require 'nvim-dap-virtual-text'.setup {}
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
     dapui.open()

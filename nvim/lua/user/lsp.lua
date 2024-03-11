@@ -1,3 +1,19 @@
+require 'nvim-treesitter.configs'.setup {
+   ensure_installed = { "c", "lua", "vim", "rust", "javascript", "typescript",
+      "c_sharp", "cpp", "css", "html", "json", "jsdoc", "sql", "yaml" },
+   sync_install = false,
+   auto_install = true,
+   highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+   },
+   autotag = {
+      enable = true
+   }
+}
+
+require 'treesitter-context'.setup {}
+
 require 'mason'.setup()
 require 'mason-lspconfig'.setup {
     ensure_installed = {
@@ -5,27 +21,18 @@ require 'mason-lspconfig'.setup {
         "tsserver", "pyright", "sqlls", "lemminx", "yamlls"
     }
 }
-
 require 'goto-preview'.setup {}
 
 -- Fix Undefined global 'vim'
 require 'neodev'.setup {
     library = {
-        plugins = { "neotest" },
+        plugins = { "neotest", "nvim-dap-ui" },
         types = true
     }
 }
 
 require 'lspkind'.init {
     preset = 'codicons'
-}
-
-local null_ls = require 'null-ls'
-null_ls.setup {
-    sources = {
-        null_ls.builtins.formatting.stylua,
-        null_ls.builtins.diagnostics.eslint
-    }
 }
 
 local cmp = require 'cmp'
@@ -99,12 +106,6 @@ cmp.setup.cmdline(':', {
     })
 })
 
--- Insert ( after select function on method item
-cmp.event:on(
-    'confirm_done',
-    require'nvim-autopairs.completion.cmp'.on_confirm_done()
-)
-
 local signs = {
     Error = " ",
     Warn = " ",
@@ -164,28 +165,16 @@ require("mason-lspconfig").setup_handlers {
                 }
             }
         }
-    end,
-    ["omnisharp"] = function()
-        local pid = vim.fn.getpid()
-        local omnisharp_bin = vim.fn.expand("$HOME/.omnisharp/OmniSharp")
-
-        require 'lspconfig'.omnisharp.setup {
-            capabilities = capabilities,
-            on_attach = function(_, bufnr)
-                vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-            end,
-            handlers = {
-                ["textDocument/definition"] = require'omnisharp_extended'.handler,
-            },
-
-            cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
-
-            enable_roslyn_analyzers = false,
-            organize_imports_on_format = true,
-            enable_import_completion = true,
-            sdk_include_prereleases = true
-        }
     end
-}
+  }
 
 require("luasnip.loaders.from_vscode").lazy_load()
+
+vim.g.neoformat_try_node_exe = 1
+
+vim.cmd [[autocmd BufWritePre *.html Neoformat]]
+vim.cmd [[autocmd BufWritePre *.js Neoformat]]
+vim.cmd [[autocmd BufWritePre *.jsx Neoformat]]
+vim.cmd [[autocmd BufWritePre *.ts Neoformat]]
+vim.cmd [[autocmd BufWritePre *.tsx Neoformat]]
+vim.cmd [[autocmd BufWritePre *.cs Neoformat]]

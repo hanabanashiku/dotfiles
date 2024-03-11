@@ -21,19 +21,7 @@ vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
--- Git
-local gitsigns = require'gitsigns'
-vim.keymap.set("n", "<leader>gj", function() gitsigns.next_hunk() end)
-vim.keymap.set("n", "<leader>gk", function() gitsigns.prev_hunk() end)
-vim.keymap.set("n", "<leader>gB", function() gitsigns.blame_line() end)
-vim.keymap.set("n", "<leader>gp", function() gitsigns.preview_hunk() end)
-vim.keymap.set("n", "<leader>gr", function() gitsigns.reset_hunk() end)
-vim.keymap.set("n", "<leader>gR", function() gitsigns.reset_buffer() end)
-vim.keymap.set("n", "<leader>gs", function() gitsigns.stage_hunk() end)
-vim.keymap.set("n", "<leader>gu", function() gitsigns.undo_stage_hunk() end)
-vim.keymap.set("n", "<leader>gd", function() gitsigns.diffthis() end)
-
--- Telescope
+-- Fuzzy
 local builtin = require('telescope.builtin')
 vim.keymap.set("n", "<leader>ff",
     function() builtin.find_files { hidden = true, no_ignore = true } end,
@@ -51,14 +39,19 @@ vim.keymap.set("n", "<leader>gt", function() builtin.git_status() end, { desc = 
 vim.keymap.set("n", "<leader>gb", function() builtin.git_branches() end, { desc = "Git branches" })
 vim.keymap.set("n", "<leader>gc", function() builtin.git_commits() end, { desc = "Git commits" })
 vim.keymap.set("n", "<leader>gf", function() builtin.git_files() end, { desc = "Git files" })
+vim.keymap.set("n", "<leader>cp", function() require 'CopilotChat.integrations.telescope'.pick(require 'CopilotChat.actions'.prompt_actions()) end)
 
--- Explorer
-vim.keymap.set("n", "<leader>o", "<cmd>Neotree toggle reveal<CR>")
-vim.keymap.set("n", "<leader>e", "<cmd>Neotree focus<CR>")
--- vim.keymap.set("n", "<leader>b", "<cmd>Neotree toggle buffers<CR>")
-vim.keymap.set("n", "<leader>ls", "<cmd>AerialToggle!<cr>")
-vim.keymap.set("n", "<leader>lo", "<cmd>TroubleToggle document_diagnostics<cr>")
-vim.keymap.set("n", "<leader>lO", "<cmd>TroubleToggle workspace_diagnostics<cr>")
+-- Git
+local gitsigns = require'gitsigns'
+vim.keymap.set("n", "<leader>gj", function() gitsigns.next_hunk() end)
+vim.keymap.set("n", "<leader>gk", function() gitsigns.prev_hunk() end)
+vim.keymap.set("n", "<leader>gB", function() gitsigns.blame_line() end)
+vim.keymap.set("n", "<leader>gp", function() gitsigns.preview_hunk() end)
+vim.keymap.set("n", "<leader>gr", function() gitsigns.reset_hunk() end)
+vim.keymap.set("n", "<leader>gR", function() gitsigns.reset_buffer() end)
+vim.keymap.set("n", "<leader>gs", function() gitsigns.stage_hunk() end)
+vim.keymap.set("n", "<leader>gu", function() gitsigns.undo_stage_hunk() end)
+vim.keymap.set("n", "<leader>gd", function() gitsigns.diffthis() end)
 
 -- Buffer
 vim.keymap.set("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer tab" })
@@ -87,6 +80,49 @@ vim.keymap.set("n", "<C-h>", require("smart-splits").move_cursor_left, { desc = 
 vim.keymap.set("n", "<C-l>", require("smart-splits").move_cursor_right, { desc = "Move to right split" })
 vim.keymap.set("n", "<C-j>", require("smart-splits").move_cursor_down, { desc = "Move to below split" })
 vim.keymap.set("n", "<C-k>", require("smart-splits").move_cursor_up, { desc = "Move to above s plit" })
+
+-- Explorer
+vim.keymap.set("n", "<leader>o", "<cmd>Neotree toggle reveal<CR>")
+vim.keymap.set("n", "<leader>e", "<cmd>Neotree focus<CR>")
+-- vim.keymap.set("n", "<leader>b", "<cmd>Neotree toggle buffers<CR>")
+vim.keymap.set("n", "<leader>ls", "<cmd>AerialToggle!<cr>")
+vim.keymap.set("n", "<leader>lo", "<cmd>TroubleToggle document_diagnostics<cr>")
+vim.keymap.set("n", "<leader>lO", "<cmd>TroubleToggle workspace_diagnostics<cr>")
+
+-- Harpoon
+local harpoon = require 'harpoon'
+vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end)
+vim.keymap.set("n", "<leader>HH", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+vim.keymap.set("n", "<leader>Hh", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<leader>Hj", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<leader>Hk", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<leader>Hl", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<leader>HJ", function() harpoon:list():next() end)
+vim.keymap.set("n", "<leader>HK", function() harpoon:list():prev() end)
+
+
+
+-- DAP
+local dap = require('dap')
+local dapui = require'dapui'
+vim.keymap.set("n", "<F5>", dap.continue)
+vim.keymap.set("n", "<S-F5>", dap.stop)
+vim.keymap.set("n", "<C-S-F5>", dap.restart)
+vim.keymap.set("n", "<F10>", dap.step_over)
+vim.keymap.set("n", "<C-F10>", dap.run_to_cursor)
+vim.keymap.set("n", "<F11>", dap.step_into)
+vim.keymap.set("n", "<S-F11>", dap.step_out)
+vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint)
+vim.keymap.set("n", "<F9>", dap.toggle_breakpoint)
+vim.keymap.set("n", "<C-S-F9>", dap.clear_breakpoints)
+vim.keymap.set("n", "<leader>B", function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end)
+vim.keymap.set("n", "<leader>dlp", function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
+vim.keymap.set("n", "<leader>dr", dap.repl.toggle)
+vim.keymap.set("n", "<leader>dk", dapui.eval)
+vim.keymap.set("n", "<leader>dwa", dapui.elements.watches.add)
+vim.keymap.set("n", "<leader>dwd", dapui.elements.watches.remove)
+vim.keymap.set("n", "<leader>dwc", dapui.elements.watches.edit)
+vim.keymap.set("n", "<leader>dwl", dapui.elements.watches.get)
 
 -- LSP
 local preview = require 'goto-preview'
@@ -117,32 +153,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set("v", "<leader>?",
             "<esc><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<cr>",
             opts)
+
+        if vim.bo[0].filetype == "cs" then
+            local csharp = require'csharp'
+            vim.keymap.set("n", "gd", csharp.go_to_definition)
+            vim.keymap.set("n", "<leader>lf", function()
+                vim.cmd("Neoformat")
+                csharp.fix_usings()
+            end)
+            vim.keymap.set("n", "<F5>", csharp.debug_project)
+            vim.keymap.set("n", "<S-F5>", csharp.debug_project)
+        end
     end,
 })
+vim.keymap.set("n", "[c", function()
+  require("treesitter-context").go_to_context(vim.v.count1)
+end, { silent = true })
 
--- DAP
-local dap = require('dap')
-local dapui = require'dapui'
-vim.keymap.set("n", "<F5>", dap.continue)
-vim.keymap.set("n", "<S-F5>", dap.stop)
-vim.keymap.set("n", "<C-S-F5>", dap.restart)
-vim.keymap.set("n", "<F10>", dap.step_over)
-vim.keymap.set("n", "<C-F10>", dap.run_to_cursor)
-vim.keymap.set("n", "<F11>", dap.step_into)
-vim.keymap.set("n", "<S-F11>", dap.step_out)
-vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint)
-vim.keymap.set("n", "<F9>", dap.toggle_breakpoint)
-vim.keymap.set("n", "<C-S-F9>", dap.clear_breakpoints)
-vim.keymap.set("n", "<leader>B", function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end)
-vim.keymap.set("n", "<leader>dlp", function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
-vim.keymap.set("n", "<leader>dr", dap.repl.toggle)
-vim.keymap.set("n", "<leader>dk", dapui.eval)
-vim.keymap.set("n", "<leader>dwa", dapui.elements.watches.add)
-vim.keymap.set("n", "<leader>dwd", dapui.elements.watches.remove)
-vim.keymap.set("n", "<leader>dwc", dapui.elements.watches.edit)
-vim.keymap.set("n", "<leader>dwl", dapui.elements.watches.get)
-
--- Testing
+-- Test
 local neotest = require'neotest'
 vim.keymap.set("n", "<leader>ltr", function() neotest.run.run() end)
 vim.keymap.set("n", "<leader>ltf", function() neotest.run.run(vim.fn.expand("%")) end)
@@ -152,14 +180,3 @@ vim.keymap.set("n", "]t", function() neotest.jump.next() end)
 vim.keymap.set("n", "[t", function() neotest.jump.prev() end)
 vim.keymap.set("n", "<leader>lte", function() neotest.summary.toggle() end)
 vim.keymap.set("n", "<leader>lto", function() neotest.output_panel.toggle() end)
-
--- Terminal
-vim.keymap.set("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>")
-vim.keymap.set("n", "<leader>th", "<cmd>ToggleTerm direction=horizontal<cr>")
-vim.keymap.set("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<cr>")
-vim.keymap.set("n", "<leader>tw", "<cmd>term<cr>")
-vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTermToggleAll<cr>")
-vim.keymap.set("t", "<C-h>", "<c-\\><c-n><c-w>h")
-vim.keymap.set("t", "<C-j>", "<c-\\><c-n><c-w>j")
-vim.keymap.set("t", "<C-k>", "<c-\\><c-n><c-w>k")
-vim.keymap.set("t", "<C-l>", "<c-\\><c-n><c-w>l")
