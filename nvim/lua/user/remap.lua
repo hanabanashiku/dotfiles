@@ -119,10 +119,10 @@ vim.keymap.set("n", "<leader>B", function() dap.set_breakpoint(vim.fn.input('Bre
 vim.keymap.set("n", "<leader>dlp", function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
 vim.keymap.set("n", "<leader>dr", dap.repl.toggle)
 vim.keymap.set("n", "<leader>dk", dapui.eval)
-vim.keymap.set("n", "<leader>dwa", dapui.elements.watches.add)
-vim.keymap.set("n", "<leader>dwd", dapui.elements.watches.remove)
-vim.keymap.set("n", "<leader>dwc", dapui.elements.watches.edit)
-vim.keymap.set("n", "<leader>dwl", dapui.elements.watches.get)
+--vim.keymap.set("n", "<leader>dwa", dapui.elements.watches.add)
+--vim.keymap.set("n", "<leader>dwd", dapui.elements.watches.remove)
+--vim.keymap.set("n", "<leader>dwc", dapui.elements.watches.edit)
+--vim.keymap.set("n", "<leader>dwl", dapui.elements.watches.get)
 
 -- LSP
 local preview = require 'goto-preview'

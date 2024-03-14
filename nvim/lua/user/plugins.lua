@@ -103,6 +103,7 @@ local packer_config = function(use)
 
     -- UI
     use { "catppuccin/nvim", as = "catppuccin" }
+    use 'rmagatti/auto-session'
     use {
         'akinsho/bufferline.nvim',
         tag = "v4.*",
@@ -174,7 +175,7 @@ local packer_config = function(use)
         branch = "canary",
         requires = {"github/copilot.vim", "nvim-lua/plenary.nvim"},
         config = function ()
-            require 'CopilotChat'.setup {}
+            pcall(require 'CopilotChat'.setup)
         end
     }
 
