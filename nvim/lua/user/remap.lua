@@ -163,6 +163,21 @@ vim.api.nvim_create_autocmd('LspAttach', {
             end)
             vim.keymap.set("n", "<F5>", csharp.debug_project)
             vim.keymap.set("n", "<S-F5>", csharp.debug_project)
+
+            -- Fix for omnisharp bad lex tokens
+            for _, client in pairs(vim.lsp.get_active_clients()) do
+                if client.name == 'omnisharp' then
+                    local tokenModifiers = client.server_capabilities.semanticTokensProvider.legend.tokenModifiers
+                    for i, v in ipairs(tokenModifiers) do
+                      tokenModifiers[i] = v:gsub(' ', '_')
+                    end
+                    local tokenTypes = client.server_capabilities.semanticTokensProvider.legend.tokenTypes
+                    for i, v in ipairs(tokenTypes) do
+                      tokenTypes[i] = v:gsub(' ', '_')
+                    end
+                end
+            end
+
         end
     end,
 })
