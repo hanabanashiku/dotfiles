@@ -77,7 +77,7 @@ local packer_config = function(use)
     -- Dap
     use 'mfussenegger/nvim-dap'
     use 'jay-babu/mason-nvim-dap.nvim'
-    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"} }
     use {
         'theHamsta/nvim-dap-virtual-text',
         config = function() require 'nvim-dap-virtual-text'.setup {} end
@@ -175,7 +175,10 @@ local packer_config = function(use)
         branch = "canary",
         requires = {"github/copilot.vim", "nvim-lua/plenary.nvim"},
         config = function ()
-            pcall(require 'CopilotChat'.setup)
+            if vim.fn.filereadable('~/.config/github-copilot/hosts.json') == 1
+                or vim.fn.filereadible('~/AppData/Local/github-copilot/hosts.json') == 1 then
+                pcall(require 'CopilotChat'.setup)
+            end
         end
     }
 
