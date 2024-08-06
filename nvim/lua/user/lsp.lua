@@ -160,6 +160,13 @@ require("mason-lspconfig").setup_handlers {
     end
   }
 
+require'roslyn'.setup {
+    exe = {
+        'dotnet',
+        vim.fs.joinpath(vim.fn.stdpath("data"), 'roslyn', 'Microsoft.CodeAnalysis.LanguageServer.dll'),
+    }
+}
+
 require("luasnip.loaders.from_vscode").lazy_load()
 
 vim.g.neoformat_try_node_exe = 1

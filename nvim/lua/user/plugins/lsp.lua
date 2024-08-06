@@ -1,7 +1,6 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        version = "v0.9.2",
         build = ":TSUpdate"
     },
     'nvim-treesitter/nvim-treesitter-context',
@@ -48,6 +47,7 @@ return {
 
     -- Language specific
     'windwp/nvim-ts-autotag',
+    'seblj/roslyn.nvim',
 
     {
         "folke/lazydev.nvim",
