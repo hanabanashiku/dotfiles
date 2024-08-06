@@ -1,6 +1,6 @@
 require 'nvim-treesitter.configs'.setup {
    ensure_installed = { "c", "lua", "vim", "rust", "javascript", "typescript",
-      "c_sharp", "cpp", "css", "html", "json", "jsdoc", "sql", "yaml" },
+       "cpp", "css", "html", "json", "jsdoc", "sql", "yaml" },
    sync_install = false,
    auto_install = true,
    highlight = {
@@ -22,14 +22,6 @@ require 'mason-lspconfig'.setup {
     }
 }
 require 'goto-preview'.setup {}
-
--- Fix Undefined global 'vim'
-require 'neodev'.setup {
-    library = {
-        plugins = { "neotest", "nvim-dap-ui" },
-        types = true
-    }
-}
 
 require 'lspkind'.init {
     preset = 'codicons'

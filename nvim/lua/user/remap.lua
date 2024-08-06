@@ -86,8 +86,9 @@ vim.keymap.set("n", "<leader>o", "<cmd>Neotree toggle reveal<CR>")
 vim.keymap.set("n", "<leader>e", "<cmd>Neotree focus<CR>")
 -- vim.keymap.set("n", "<leader>b", "<cmd>Neotree toggle buffers<CR>")
 vim.keymap.set("n", "<leader>ls", "<cmd>AerialToggle!<cr>")
-vim.keymap.set("n", "<leader>lo", "<cmd>TroubleToggle document_diagnostics<cr>")
-vim.keymap.set("n", "<leader>lO", "<cmd>TroubleToggle workspace_diagnostics<cr>")
+vim.keymap.set("n", "<leader>lo", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>")
+vim.keymap.set("n", "<leader>lO", "<cmd>Trouble diagnostics toggle<cr>")
+vim.keymap.set("n", "<leader>lR", "<cmd>Trouble lsp toggle<cr>")
 
 -- Harpoon
 local harpoon = require 'harpoon'
@@ -155,18 +156,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
             opts)
 
         if vim.bo[0].filetype == "cs" then
-            local csharp = require'csharp'
-            vim.keymap.set("n", "gd", csharp.go_to_definition)
-            vim.keymap.set("n", "<leader>lf", function()
-                vim.cmd("Neoformat")
-                csharp.fix_usings()
-            end)
-            vim.keymap.set("n", "<F5>", csharp.debug_project)
-            vim.keymap.set("n", "<S-F5>", csharp.debug_project)
+            -- local csharp = require'csharp'
+            -- vim.keymap.set("n", "gd", csharp.go_to_definition)
+            -- vim.keymap.set("n", "<leader>lf", function()
+            --     vim.cmd("Neoformat")
+            --     csharp.fix_usings()
+            -- end)
+            -- vim.keymap.set("n", "<F5>", csharp.debug_project)
+            -- vim.keymap.set("n", "<S-F5>", csharp.debug_project)
 
             -- Fix for omnisharp bad lex tokens
-            for _, client in pairs(vim.lsp.get_active_clients()) do
-                if client.name == 'omnisharp' then
+            for _, client in pairs(vim.lsp.get_clients()) do
+                if client.name == 'omnisharp' or client.name == 'roslyn' then
                     local tokenModifiers = client.server_capabilities.semanticTokensProvider.legend.tokenModifiers
                     for i, v in ipairs(tokenModifiers) do
                       tokenModifiers[i] = v:gsub(' ', '_')

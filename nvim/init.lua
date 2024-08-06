@@ -1,6 +1,9 @@
 vim.loader.enable()
 
-require 'user.plugins'
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+require 'user.lazy'
 require 'user.set'
 require 'user.colors'
 require 'user.remap'
