@@ -1,26 +1,37 @@
 require 'nvim-treesitter.configs'.setup {
-   ensure_installed = { "c", "lua", "vim", "rust", "javascript", "typescript",
-       "cpp", "css", "html", "json", "jsdoc", "sql", "yaml" },
+   ensure_installed = { "c", "c_sharp", "lua", "vim", "rust", "javascript", "typescript",
+       "cpp", "css", "html", "json", "jsdoc", "sql", "yaml", "svelte" },
    sync_install = false,
    auto_install = true,
    highlight = {
       enable = true,
       additional_vim_regex_highlighting = false,
-   },
-   autotag = {
-      enable = true
    }
 }
 
 require 'treesitter-context'.setup {}
+require 'nvim-ts-autotag'.setup {}
 
-require 'mason'.setup()
-require 'mason-lspconfig'.setup {
-    ensure_installed = {
-        "lua_ls", "clangd", "omnisharp", "cssls", "emmet_ls", "jsonls",
-        "tsserver", "pyright", "sqlls", "lemminx", "yamlls"
+require 'mason'.setup {
+    registries={
+        'github:mason-org/mason-registry',
+        'github:crashdummyy/mason-registry'
     }
 }
+require 'mason-lspconfig'.setup {
+    automatic_installation = true,
+    ensure_installed = {
+        "lua_ls", "clangd", "cssls", "emmet_ls", "jsonls",
+        "ts_ls", "pyright", "sqlls", "lemminx", "yamlls", "svelte"
+    }
+}
+require 'mason-tool-installer'.setup {
+    ensure_installed = {
+        'roslyn',
+        'rzls'
+    }
+}
+
 require 'goto-preview'.setup {}
 
 require 'lspkind'.init {
@@ -71,6 +82,7 @@ cmp.setup({
     sources = cmp.config.sources({
         { name = 'nvim_lsp', priority = 1000 },
         { name = 'luasnip', priority = 750 },
+        { name = 'nvim_lsp_signature_help' }
     })
 })
 
@@ -160,20 +172,14 @@ require("mason-lspconfig").setup_handlers {
     end
   }
 
-require'roslyn'.setup {
-    exe = {
-        'dotnet',
-        vim.fs.joinpath(vim.fn.stdpath("data"), 'roslyn', 'Microsoft.CodeAnalysis.LanguageServer.dll'),
-    }
-}
-
 require("luasnip.loaders.from_vscode").lazy_load()
 
 vim.g.neoformat_try_node_exe = 1
 
 vim.cmd [[autocmd BufWritePre *.html Neoformat]]
-vim.cmd [[autocmd BufWritePre *.js Neoformat]]
-vim.cmd [[autocmd BufWritePre *.jsx Neoformat]]
-vim.cmd [[autocmd BufWritePre *.ts Neoformat]]
-vim.cmd [[autocmd BufWritePre *.tsx Neoformat]]
-vim.cmd [[autocmd BufWritePre *.cs Neoformat]]
+vim.cmd [[autocmd BufWritePre *.js Neoformat prettier]]
+vim.cmd [[autocmd BufWritePre *.jsx Neoformat prettier]]
+vim.cmd [[autocmd BufWritePre *.ts Neoformat prettier]]
+vim.cmd [[autocmd BufWritePre *.tsx Neoformat prettier]]
+vim.cmd [[autocmd BufWritePre *.svelte Neoformat prettier]]
+vim.cmd [[autocmd BufWritePre *.cs Neoformat csharpier]]

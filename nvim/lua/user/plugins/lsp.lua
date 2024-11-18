@@ -7,16 +7,19 @@ return {
     'rmagatti/goto-preview',
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
     'neovim/nvim-lspconfig',
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
     'hrsh7th/cmp-cmdline',
+    'hrsh7th/cmp-nvim-lsp-signature-help',
     'petertriho/cmp-git',
     'saadparwaiz1/cmp_luasnip',
     'rafamadriz/friendly-snippets',
     'onsails/lspkind.nvim',
     'b0o/schemastore.nvim',
+    'sbdchd/neoformat',
     {
         'numToStr/Comment.nvim',
         opts = {},
@@ -34,9 +37,9 @@ return {
         end,
     },
     {
-        'altermo/ultimate-autopair.nvim',
+        'windwp/nvim-autopairs',
         event={'InsertEnter','CmdlineEnter'},
-        branch='v0.6',
+        config = true,
         opts={},
     },
     {
@@ -47,7 +50,17 @@ return {
 
     -- Language specific
     'windwp/nvim-ts-autotag',
-    'seblj/roslyn.nvim',
+
+    {
+        "luckasRanarison/tailwind-tools.nvim",
+        name = "tailwind-tools",
+        build = ":UpdateRemotePlugins",
+        dependencies = {
+          "nvim-treesitter/nvim-treesitter",
+          "nvim-telescope/telescope.nvim", -- optional
+          "neovim/nvim-lspconfig", -- optional
+        }
+    },
 
     {
         "folke/lazydev.nvim",

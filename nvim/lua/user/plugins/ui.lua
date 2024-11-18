@@ -18,7 +18,6 @@ return {
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons",
             "MunifTanjim/nui.nvim",
-            "3rd/image.nvim",
         }
     },
     {
@@ -40,7 +39,7 @@ return {
             "nvim-tree/nvim-web-devicons"
         },
     },
-    {
+    { -- breadcrumbs
         "utilyre/barbecue.nvim",
         name = "barbecue",
         version = "*",
@@ -55,6 +54,11 @@ return {
         opts = {},
         cmd = "Trouble",
         dependencies = { "nvim-tree/nvim-web-devicons" }
+    },
+    {
+        'Chaitanyabsprip/fastaction.nvim',
+        ---@type FastActionConfig
+        opts = {},
     },
     {
         "ThePrimeagen/harpoon",
