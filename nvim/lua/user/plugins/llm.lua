@@ -1,3 +1,20 @@
+local isCopilotEnabled = function()
+    local home = os.getenv("HOME") or os.getenv("USERPROFILE")
+    local copilot_path = home .. "/.config/github-copilot/apps.json"
+
+    if vim.loop.os_uname().sysname == "Windows_NT" then
+        copilot_path = home .. "\\AppData\\Roaming\\GitHub\\Copilot\\apps.json"
+    end
+
+    local file = io.open(copilot_path, 'r')
+    if file then
+        file:close()
+        return true
+    else
+        return false
+    end
+end
+
 return {
     'github/copilot.vim',
     {
@@ -7,11 +24,7 @@ return {
             { "github/copilot.vim" },
             { "nvim-lua/plenary.nvim" },
         },
-        config = function()
-            if vim.fn.filereadable('~/.config/github-copilot/hosts.json') == 1
-                or vim.fn.filereadable('~/AppData/Local/github-copilot/hosts.json') == 1 then
-                pcall(require 'CopilotChat'.setup)
-            end
-        end
+        opts = {},
+        enabled = isCopilotEnabled()
     }
 }

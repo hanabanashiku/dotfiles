@@ -28,7 +28,14 @@ require 'mason-lspconfig'.setup {
 require 'mason-tool-installer'.setup {
     ensure_installed = {
         'roslyn',
-        'rzls'
+        'rzls',
+        'csharpier',
+        'prettier',
+        'eslint-lsp',
+        'sqlfmt',
+        'rustywind',
+        'stylua',
+        'shfmt'
     }
 }
 
@@ -173,13 +180,3 @@ require("mason-lspconfig").setup_handlers {
   }
 
 require("luasnip.loaders.from_vscode").lazy_load()
-
-vim.g.neoformat_try_node_exe = 1
-
-vim.cmd [[autocmd BufWritePre *.html Neoformat]]
-vim.cmd [[autocmd BufWritePre *.js Neoformat prettier]]
-vim.cmd [[autocmd BufWritePre *.jsx Neoformat prettier]]
-vim.cmd [[autocmd BufWritePre *.ts Neoformat prettier]]
-vim.cmd [[autocmd BufWritePre *.tsx Neoformat prettier]]
-vim.cmd [[autocmd BufWritePre *.svelte Neoformat prettier]]
-vim.cmd [[autocmd BufWritePre *.cs Neoformat csharpier]]

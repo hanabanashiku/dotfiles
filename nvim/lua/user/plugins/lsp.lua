@@ -19,7 +19,32 @@ return {
     'rafamadriz/friendly-snippets',
     'onsails/lspkind.nvim',
     'b0o/schemastore.nvim',
-    'sbdchd/neoformat',
+    {
+        'stevearc/conform.nvim',
+        opts = {
+            formatters_by_ft = {
+                c = { "clang-format" },
+                cpp = { "clang-format" },
+                lua = { "stylua" },
+                kt = { "ktfmt" },
+                javascript = { "prettier" },
+                javascriptreact = { "prettier" },
+                typescript = { "prettier" },
+                typescriptreact = { "prettier", "rustywind" },
+                svelte = { "prettier", "rustywind" },
+                html = { "prettier", "rustywind" },
+                css = { "prettier" },
+                json = { "prettier" },
+                cs = { "csharpier" },
+                go = { "gofmt" },
+                sh = { "shfmt" },
+                sql = { "sqlfmt" }
+            },
+            format_on_save = {
+                timeout_ms = 500,
+            }
+        },
+    },
     {
         'numToStr/Comment.nvim',
         opts = {},
@@ -50,7 +75,6 @@ return {
 
     -- Language specific
     'windwp/nvim-ts-autotag',
-
     {
         "luckasRanarison/tailwind-tools.nvim",
         name = "tailwind-tools",
@@ -60,6 +84,16 @@ return {
           "nvim-telescope/telescope.nvim", -- optional
           "neovim/nvim-lspconfig", -- optional
         }
+    },
+
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        build = "cd app && npm install",
+        init = function()
+            vim.g.mkdp_filetypes = { "markdown" }
+        end,
+        ft = { "markdown" },
     },
 
     {
