@@ -215,7 +215,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 	end,
 })
-vim.keymap.set("n", "[c", function()
+vim.keymap.set("n", "gc", function()
 	require("treesitter-context").go_to_context(vim.v.count1)
 end, { silent = true })
 
