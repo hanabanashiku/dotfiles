@@ -21,12 +21,13 @@ vim.opt.incsearch = true
 
 vim.opt.scrolloff = 8
 vim.opt.updatetime = 750
-vim.cmd "set noshowmode"
+vim.cmd("set noshowmode")
 
 vim.opt.termguicolors = true
 vim.opt.colorcolumn = "80"
 
 vim.opt.spell = true
-vim.opt.spelllang = { 'en_us'}
+vim.opt.spelllang = { "en_us" }
 
-vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+vim.cmd("set formatoptions-=cro")

@@ -16,7 +16,6 @@ return {
 	"hrsh7th/cmp-nvim-lsp-signature-help",
 	"petertriho/cmp-git",
 	"saadparwaiz1/cmp_luasnip",
-	"rafamadriz/friendly-snippets",
 	"onsails/lspkind.nvim",
 	"b0o/schemastore.nvim",
 	{
@@ -34,20 +33,42 @@ return {
 				svelte = { "prettier", "rustywind" },
 				html = { "prettier", "rustywind" },
 				css = { "prettier" },
+				less = { "prettier" },
+				markdown = { "prettier" },
+				flow = { "prettier" },
+				graphql = { "prettier" },
+				scss = { "prettier" },
 				json = { "prettier" },
 				cs = { "csharpier" },
 				go = { "gofmt" },
 				sh = { "shfmt" },
 				sql = { "sqlfmt" },
 			},
-			format_on_save = {
-				timeout_ms = 500,
-			},
+			format_on_save = function(bufnr)
+				-- Disable with a global or buffer-local variable
+				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+					return
+				end
+				-- Disable autoformat for files in a certain path
+				local bufname = vim.api.nvim_buf_get_name(bufnr)
+				if bufname:match("/node_modules/") then
+					return
+				end
+				return { timeout_ms = 500, lsp_format = "fallback" }
+			end,
 		},
+		init = function()
+			vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+		end,
 	},
 	{
 		"numToStr/Comment.nvim",
-		opts = {},
+		opts = {
+			mappings = {
+				basic = false,
+				extra = false,
+			},
+		},
 	},
 	{
 		"nmac427/guess-indent.nvim",
@@ -57,9 +78,7 @@ return {
 		"kylechui/nvim-surround",
 		version = "*",
 		event = "VeryLazy",
-		config = function()
-			require("nvim-surround").setup({})
-		end,
+		opts = "{},",
 	},
 	{
 		"windwp/nvim-autopairs",
@@ -71,6 +90,7 @@ return {
 		"L3MON4D3/LuaSnip",
 		version = "v2.*",
 		build = "make install_jsregexp",
+		dependencies = { "rafamadriz/friendly-snippets" },
 	},
 
 	-- Language specific
@@ -83,6 +103,37 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-telescope/telescope.nvim", -- optional
 			"neovim/nvim-lspconfig", -- optional
+		},
+	},
+
+	{
+		"seblj/roslyn.nvim",
+		ft = "cs",
+		opts = {
+			config = {
+				settings = {
+					["csharp|inlay_hints"] = {
+						csharp_enable_inlay_hints_for_implicit_object_creation = true,
+						csharp_enable_inlay_hints_for_implicit_variable_types = false,
+						csharp_enable_inlay_hints_for_lambda_parameter_types = true,
+						csharp_enable_inlay_hints_for_types = true,
+						dotnet_enable_inlay_hints_for_indexer_parameters = true,
+						dotnet_enable_inlay_hints_for_literal_parameters = true,
+						dotnet_enable_inlay_hints_for_object_creation_parameters = false,
+						dotnet_enable_inlay_hints_for_other_parameters = true,
+						dotnet_enable_inlay_hints_for_parameters = false,
+						dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
+						dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
+						dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
+					},
+					["csharp|code_lens"] = {
+						dotnet_enable_references_code_lens = true,
+					},
+					["csharp|symbol_search"] = {
+						dotnet_search_reference_assemblies = true,
+					},
+				},
+			},
 		},
 	},
 
@@ -113,6 +164,7 @@ return {
 			end
 		end,
 	},
+
 	{
 		"folke/lazydev.nvim",
 		ft = "lua", -- only load on lua files
