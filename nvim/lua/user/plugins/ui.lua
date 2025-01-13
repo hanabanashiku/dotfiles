@@ -20,33 +20,9 @@ return {
 		},
 	},
 	{
-		"akinsho/bufferline.nvim",
-		version = "*",
-		dependencies = "nvim-tree/nvim-web-devicons",
-		opts = {},
-	},
-	{
 		"chentoast/marks.nvim",
 		event = "VeryLazy",
 		opts = {},
-	},
-	{
-		"Pocco81/auto-save.nvim",
-		opts = {
-			trigger_events = { "BufLeave", "QuickFixCmdPost", "VimLeavePre", "VimSuspend" },
-		},
-		condition = function(buf)
-			local fn = vim.fn
-			local utils = require("auto-save.utils.data")
-
-			if vim.api.nvim_buf_get_name(buf):match(".config/nvim") then
-				return false
-			end
-			if fn.getbufvar(buf, "&modifiable") == 1 and utils.not_in(fn.getbufvar(buf, "&filetype"), {}) then
-				return true -- met condition(s), can save
-			end
-			return false
-		end,
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -121,10 +97,5 @@ return {
 		"Chaitanyabsprip/fastaction.nvim",
 		---@type FastActionConfig
 		opts = {},
-	},
-	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 }
