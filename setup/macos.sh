@@ -9,13 +9,9 @@ fi
 
 echo "Installing packages"
 brew update
-brew install git nvm neovim
-brew upgrade git nvm neovim
-brew install --cask dotnet-sdk
-brew install --cask iterm2
+brew install git neovim tmux
+brew install --cask ghostty
 brew install --cask font-meslo-lg-nerd-font
-brew install spotify-tui
-brew install --cask nikitabobko/tap/aerospace
 
 echo "Linking configuration"
 
@@ -31,4 +27,3 @@ move_and_link "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
 move_and_link "$DOTFILES_DIR/.ideavimrc" "$HOME/.ideavimrc"
 move_and_link "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 move_and_link "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
-move_and_link "$DOTFILES_DIR/.aerospace.toml" "$HOME/.aerospace.toml"
