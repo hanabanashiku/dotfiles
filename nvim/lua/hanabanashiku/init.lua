@@ -1,5 +1,0 @@
-require('hanabanashiku.packer')
-require('hanabanashiku.set')
-require('hanabanashiku.plugins')
-require('hanabanashiku.remap')
-require('hanabanashiku.colors')
