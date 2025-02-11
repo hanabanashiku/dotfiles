@@ -31,3 +31,6 @@ vim.opt.spelllang = { "en_us" }
 
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 vim.cmd("set formatoptions-=cro")
+
+-- Auto-resize panes with vim window size change
+vim.api.nvim_command('autocmd VimResized * wincmd =')

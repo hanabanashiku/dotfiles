@@ -109,22 +109,21 @@ vim.keymap.set("n", "<leader>CE", "<cmd>%bd|e#<cr>", { desc = "Force close all b
 vim.keymap.set("n", "<leader>v", "<C-w>s", { desc = "Split horizontally" })
 vim.keymap.set("n", "<leader>h", "<C-w>v", { desc = "Split vertically" })
 
-if vim.loop.os_uname().sysname == "Darwin" then
-	vim.keymap.set("n", "<D-Up>", require("smart-splits").resize_up, { desc = "Resize split up" })
-	vim.keymap.set("n", "<D-Down>", require("smart-splits").resize_down, { desc = "Resize split down" })
-	vim.keymap.set("n", "<D-Left>", require("smart-splits").resize_left, { desc = "Resize split left" })
-	vim.keymap.set("n", "<D-Right>", require("smart-splits").resize_right, { desc = "Resize split right" })
-else
-	vim.keymap.set("n", "<C-Up>", require("smart-splits").resize_up, { desc = "Resize split up" })
-	vim.keymap.set("n", "<C-Down>", require("smart-splits").resize_down, { desc = "Resize split down" })
-	vim.keymap.set("n", "<C-Left>", require("smart-splits").resize_left, { desc = "Resize split left" })
-	vim.keymap.set("n", "<C-Right>", require("smart-splits").resize_right, { desc = "Resize split right" })
-end
-
-vim.keymap.set("n", "<C-h>", require("smart-splits").move_cursor_left, { desc = "Move to left split" })
-vim.keymap.set("n", "<C-l>", require("smart-splits").move_cursor_right, { desc = "Move to right split" })
-vim.keymap.set("n", "<C-j>", require("smart-splits").move_cursor_down, { desc = "Move to below split" })
-vim.keymap.set("n", "<C-k>", require("smart-splits").move_cursor_up, { desc = "Move to above s plit" })
+vim.keymap.set('n', '<A-h>', require('smart-splits').resize_left)
+vim.keymap.set('n', '<A-j>', require('smart-splits').resize_down)
+vim.keymap.set('n', '<A-k>', require('smart-splits').resize_up)
+vim.keymap.set('n', '<A-l>', require('smart-splits').resize_right)
+-- moving between splits
+vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
+vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
+vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
+vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
+vim.keymap.set('n', '<C-\\>', require('smart-splits').move_cursor_previous)
+-- swapping buffers between windows
+vim.keymap.set('n', '<leader><leader>h', require('smart-splits').swap_buf_left)
+vim.keymap.set('n', '<leader><leader>j', require('smart-splits').swap_buf_down)
+vim.keymap.set('n', '<leader><leader>k', require('smart-splits').swap_buf_up)
+vim.keymap.set('n', '<leader><leader>l', require('smart-splits').swap_buf_right)
 
 -- Explorer
 vim.keymap.set("n", "<leader>o", "<cmd>Neotree toggle reveal<CR>")
