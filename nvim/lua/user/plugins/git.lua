@@ -11,5 +11,5 @@ return {
 			default_mappings = false,
 		},
 	},
+	"tpope/vim-fugitive",
 }
-

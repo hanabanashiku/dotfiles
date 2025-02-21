@@ -81,9 +81,8 @@ return {
 		opts = "{},",
 	},
 	{
-		"windwp/nvim-autopairs",
-		event = { "InsertEnter", "CmdlineEnter" },
-		config = true,
+		"echasnovski/mini.pairs",
+		version = "*",
 		opts = {},
 	},
 	{
