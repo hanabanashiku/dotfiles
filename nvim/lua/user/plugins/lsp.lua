@@ -221,6 +221,15 @@ return {
 			},
 		},
 	},
+	{
+		"GustavEikaas/easy-dotnet.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+		opts = {
+			test_runner = {
+				viewmode = "split",
+			},
+		},
+	},
 
 	{
 		"folke/lazydev.nvim",

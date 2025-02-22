@@ -1,43 +1,18 @@
-local function file_exists(name)
-	local f = io.open(name, "r")
-	if f ~= nil then
-		io.close(f)
-		return true
-	else
-		return false
-	end
-end
-
-local function getCurrentFileDirName()
-	local fullPath = vim.fn.expand("%:p:h") -- Get the full path of the directory containing the current file
-	local dirName = fullPath:match("([^/\\]+)$") -- Extract the directory name
-	return dirName
-end
-
-local function get_dll_path()
-	local debugPath = vim.fn.expand("%:p:h") .. "/bin/Debug"
-	if not file_exists(debugPath) then
-		return vim.fn.getcwd()
-	end
-	local command = 'find "' .. debugPath .. '" -maxdepth 1 -type d -name "*net*" -print -quit'
-	local handle = io.popen(command)
-	local result = ""
-	if handle then
-		result = handle:read("*a")
-		handle:close()
-	end
-	result = result:gsub("[\r\n]+$", "") -- Remove trailing newline and carriage return
-	if result == "" then
-		return debugPath
-	else
-		local potentialDllPath = result .. "/" .. getCurrentFileDirName() .. ".dll"
-		if file_exists(potentialDllPath) then
-			return potentialDllPath
-		else
-			return result == "" and debugPath or result .. "/"
-		end
-		--        return result .. '/' -- Adds a trailing slash if a net folder is found
-	end
+local function rebuild_project(co, path)
+	local spinner = require("easy-dotnet.ui-modules.spinner").new()
+	spinner:start_spinner("Building")
+	vim.fn.jobstart(string.format("dotnet build %s", path), {
+		on_exit = function(_, return_code)
+			if return_code == 0 then
+				spinner:stop_spinner("Built successfully")
+			else
+				spinner:stop_spinner("Build failed with exit code " .. return_code, vim.log.levels.ERROR)
+				error("Build failed")
+			end
+			coroutine.resume(co)
+		end,
+	})
+	coroutine.yield()
 end
 
 return {
@@ -45,6 +20,46 @@ return {
 		"mfussenegger/nvim-dap",
 		config = function()
 			local dap = require("dap")
+			local dotnet = require("easy-dotnet")
+			local debug_dll = nil
+
+			local function ensure_dll()
+				if debug_dll ~= nil then
+					return debug_dll
+				end
+				local dll = dotnet.get_debug_dll()
+				debug_dll = dll
+				return dll
+			end
+
+			for _, value in ipairs({ "cs", "fsharp" }) do
+				dap.configurations[value] = {
+					{
+						type = "coreclr",
+						name = "launch - netcoredbg",
+						request = "launch",
+						env = function()
+							local dll = ensure_dll()
+							local vars = dotnet.get_environment_variables(dll.project_name, dll.relative_project_path)
+							return vars or nil
+						end,
+						program = function()
+							local dll = ensure_dll()
+							local co = coroutine.running()
+							rebuild_project(co, dll.project_path)
+							return dll.relative_dll_path
+						end,
+						cwd = function()
+							local dll = ensure_dll()
+							return dll.relative_project_path
+						end,
+					},
+				}
+			end
+
+			dap.listeners.before["event_terminated"]["easy-dotnet"] = function()
+				debug_dll = nil
+			end
 
 			dap.adapters.coreclr = {
 				type = "executable",
@@ -52,18 +67,6 @@ return {
 					.. "/mason/packages/netcoredbg/netcoredbg"
 					.. (vim.fn.has("win32") == 1 and ".exe" or ""),
 				args = { "--interpreter=vscode" },
-			}
-
-			dap.configurations.cs = {
-				{
-					type = "coreclr",
-					name = "NetCoreDbg: Launch",
-					request = "launch",
-					cwd = "${fileDirName}",
-					program = function()
-						return vim.fn.input("Pauth to dll", get_dll_path(), "file")
-					end,
-				},
 			}
 		end,
 	},
@@ -121,3 +124,4 @@ return {
 		end,
 	},
 }
+

@@ -1,5 +1,17 @@
 return {
 	{
+		"saghen/blink.compat",
+		version = "*",
+		lazy = true,
+		opts = {},
+		config = function()
+			require("blink.compat.registry").register_source(
+				"easy-dotnet",
+				require("easy-dotnet").package_completion_source
+			)
+		end,
+	},
+	{
 		"saghen/blink.cmp",
 		dependencies = {
 			{
@@ -34,14 +46,16 @@ return {
 			},
 
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer", "git" },
+				default = { "lsp", "path", "snippets", "buffer", "git", "easy-dotnet" },
 				providers = {
 					git = {
 						module = "blink-cmp-git",
 						name = "Git",
-						opts = {
-							-- options for the blink-cmp-git
-						},
+						opts = {},
+					},
+					["easy-dotnet"] = {
+						name = "DotNet",
+						module = "blink.compat.source",
 					},
 				},
 			},
