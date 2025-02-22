@@ -1,5 +1,20 @@
 return {
 	{
+		"numToStr/Comment.nvim",
+		opts = {
+			mappings = {
+				basic = false,
+				extra = false,
+			},
+		},
+	},
+	{
+		"kylechui/nvim-surround",
+		version = "*",
+		event = "VeryLazy",
+		opts = {},
+	},
+	{
 		"monaqa/dial.nvim",
 		config = function()
 			local dial = require("dial.map")

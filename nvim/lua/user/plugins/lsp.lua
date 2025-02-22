@@ -1,23 +1,132 @@
 return {
+	-- Mason setup
+	{
+		"williamboman/mason.nvim",
+		opts = {
+
+			registries = {
+				"github:mason-org/mason-registry",
+				"github:crashdummyy/mason-registry",
+			},
+		},
+	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		opts = {
+			automatic_installation = true,
+			ensure_installed = {
+				"lua_ls",
+				"clangd",
+				"cssls",
+				"emmet_ls",
+				"jsonls",
+				"ts_ls",
+				"pyright",
+				-- "sqlls",
+				"lemminx",
+				"yamlls",
+				"svelte",
+			},
+		},
+		config = function()
+			require("mason-lspconfig").setup_handlers({
+				["lua_ls"] = function()
+					require("lspconfig").lua_ls.setup({
+						settings = {
+							Lua = {
+								diagnostics = {
+									globals = { "vim" },
+								},
+								workspace = {
+									checkThirdParty = false,
+								},
+								telemetry = {
+									enable = false,
+								},
+							},
+						},
+					})
+				end,
+				["jsonls"] = function()
+					require("lspconfig").jsonls.setup({
+						settings = {
+							json = {
+								schemas = require("schemastore").json.schemas(),
+								validate = { enable = true },
+							},
+						},
+					})
+				end,
+				["yamlls"] = function()
+					require("lspconfig").yamlls.setup({
+						settings = {
+							yaml = {
+								schemas = require("schemastore").yaml.schemas(),
+							},
+						},
+					})
+				end,
+			})
+		end,
+	},
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		opts = {
+
+			ensure_installed = {
+				"roslyn",
+				-- "rzls",
+				"csharpier",
+				"prettier",
+				"eslint-lsp",
+				"sqlfmt",
+				"rustywind",
+				"stylua",
+				"shfmt",
+			},
+		},
+	},
+	{
+		"neovim/nvim-lspconfig",
+		config = function()
+			vim.lsp.inlay_hint.enable()
+		end,
+	},
+
+	-- Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				ensure_installed = {
+					"c",
+					"c_sharp",
+					"lua",
+					"vim",
+					"rust",
+					"javascript",
+					"typescript",
+					"cpp",
+					"css",
+					"html",
+					"json",
+					"jsdoc",
+					"sql",
+					"yaml",
+					"svelte",
+				},
+				sync_install = false,
+				auto_install = true,
+				highlight = {
+					enable = true,
+					additional_vim_regex_highlighting = false,
+				},
+			})
+		end,
 	},
-	"nvim-treesitter/nvim-treesitter-context",
-	"rmagatti/goto-preview",
-	"williamboman/mason.nvim",
-	"williamboman/mason-lspconfig.nvim",
-	"WhoIsSethDaniel/mason-tool-installer.nvim",
-	"neovim/nvim-lspconfig",
-	"hrsh7th/cmp-nvim-lsp",
-	"hrsh7th/cmp-buffer",
-	"hrsh7th/cmp-path",
-	"hrsh7th/cmp-cmdline",
-	"hrsh7th/cmp-nvim-lsp-signature-help",
-	"petertriho/cmp-git",
-	"saadparwaiz1/cmp_luasnip",
-	"onsails/lspkind.nvim",
-	"b0o/schemastore.nvim",
+
+	-- Formatting
 	{
 		"stevearc/conform.nvim",
 		opts = {
@@ -61,39 +170,16 @@ return {
 			vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 		end,
 	},
+
 	{
-		"numToStr/Comment.nvim",
-		opts = {
-			mappings = {
-				basic = false,
-				extra = false,
-			},
-		},
-	},
-	{
-		"nmac427/guess-indent.nvim",
-		opts = {},
-	},
-	{
-		"kylechui/nvim-surround",
-		version = "*",
-		event = "VeryLazy",
-		opts = "{},",
-	},
-	{
-		"echasnovski/mini.pairs",
-		version = "*",
-		opts = {},
-	},
-	{
-		"L3MON4D3/LuaSnip",
-		version = "v2.*",
-		build = "make install_jsregexp",
-		dependencies = { "rafamadriz/friendly-snippets" },
+		"rmagatti/goto-preview",
+		config = true,
 	},
 
+	"b0o/schemastore.nvim",
+
 	-- Language specific
-	"windwp/nvim-ts-autotag",
+	{ "windwp/nvim-ts-autotag", opts = {} },
 	{
 		"luckasRanarison/tailwind-tools.nvim",
 		name = "tailwind-tools",
@@ -137,34 +223,6 @@ return {
 	},
 
 	{
-		"iamcco/markdown-preview.nvim",
-		enabled = vim.fn.executable("npm") == 1,
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		build = "cd app && npm install",
-		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-			vim.g.mkdp_auto_close = 0
-			vim.g.mkdp_command_for_global = 1
-			vim.g.mkdp_combine_preview = 1
-
-			local function load_then_exec(cmd)
-				return function()
-					vim.cmd.delcommand(cmd)
-					require("lazy").load({ plugins = { "markdown-preview.nvim" } })
-					vim.api.nvim_exec_autocmds("BufEnter", {}) -- commands appear only after BufEnter
-					vim.cmd(cmd)
-				end
-			end
-
-			---Fixes "No command :MarkdownPreview"
-			---https://github.com/iamcco/markdown-preview.nvim/issues/585#issuecomment-1724859362
-			for _, cmd in pairs({ "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" }) do
-				vim.api.nvim_create_user_command(cmd, load_then_exec(cmd), {})
-			end
-		end,
-	},
-
-	{
 		"folke/lazydev.nvim",
 		ft = "lua", -- only load on lua files
 		opts = {
@@ -176,16 +234,5 @@ return {
 				{ path = "luvit-meta/library", words = { "vim%.uv" } },
 			},
 		},
-	},
-	{ "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
-	{ -- optional completion source for require statements and module annotations
-		"hrsh7th/nvim-cmp",
-		opts = function(_, opts)
-			opts.sources = opts.sources or {}
-			table.insert(opts.sources, {
-				name = "lazydev",
-				group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-			})
-		end,
 	},
 }

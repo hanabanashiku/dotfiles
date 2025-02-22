@@ -1,4 +1,7 @@
 local isCopilotEnabled = function()
+	if vim.g.copilot_disable then
+		return false
+	end
 	local home = os.getenv("HOME") or os.getenv("USERPROFILE")
 	local copilot_path = home .. "/.config/github-copilot/apps.json"
 

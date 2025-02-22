@@ -32,5 +32,18 @@ vim.opt.spelllang = { "en_us" }
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 vim.cmd("set formatoptions-=cro")
 
+local signs = {
+	Error = "",
+	Warn = " ",
+	Hint = "󰌵",
+	Info = " ",
+}
+for type, icon in pairs(signs) do
+	local hl = "DiagnosticSign" .. type
+	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
+vim.g.copilot_disable = true
+
 -- Auto-resize panes with vim window size change
-vim.api.nvim_command('autocmd VimResized * wincmd =')
+vim.api.nvim_command("autocmd VimResized * wincmd =")

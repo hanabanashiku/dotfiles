@@ -4,26 +4,8 @@ return {
 		name = "catppuccin",
 		priority = 1000,
 	},
-	{
-		"rmagatti/auto-session",
-		opts = {
-			lazy_support = true,
-			auto_restore = true,
-			auto_save = true,
-			pre_save_cmds = {
-				function()
-					require("neo-tree.sources.manager").close_all()
-				end,
-			},
-			suppressed_dirs = { "~/", "~/code", "/", "~/Downloads", "~/Documents", "~/Desktop" },
-			use_git_branch = true,
-		},
-	},
-	{
-		"chentoast/marks.nvim",
-		event = "VeryLazy",
-		opts = {},
-	},
+
+	-- Panels
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
@@ -61,14 +43,21 @@ return {
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {
+			options = {
+				theme = "catppuccin",
+			},
+			extensions = { "aerial", "neo-tree", "nvim-dap-ui", "trouble" },
+			sections = {
+				lualine_a = { "mode" },
+				lualine_b = { "branch", "diff", "diagnostics" },
+				lualine_c = {},
+				lualine_x = { "fileformat", "filetype" },
+				lualine_y = {},
+				lualine_z = { "location", "searchcount" },
+			},
+		},
 	},
-	{
-		"mrjones2014/smart-splits.nvim",
-		version = "v1.5.*",
-	},
-	"famiu/bufdelete.nvim",
-	"rcarriga/nvim-notify",
-	-- 'HiPhish/rainbow-delimiters.nvim',
 	{
 		"stevearc/aerial.nvim",
 		opts = {},
@@ -77,6 +66,15 @@ return {
 			"nvim-tree/nvim-web-devicons",
 		},
 	},
+
+	-- Buffer management
+	{
+		"mrjones2014/smart-splits.nvim",
+		version = "v1.5.*",
+	},
+	"famiu/bufdelete.nvim",
+
+	-- Code-aware
 	{ -- breadcrumbs
 		"utilyre/barbecue.nvim",
 		name = "barbecue",
@@ -87,11 +85,43 @@ return {
 		},
 		opts = {},
 	},
+	{ -- Show nested scopes
+		"nvim-treesitter/nvim-treesitter-context",
+		opts = {},
+	},
 	{
 		"folke/trouble.nvim",
 		opts = {},
 		cmd = "Trouble",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+
+	{
+		"rmagatti/auto-session",
+		opts = {
+			lazy_support = true,
+			auto_restore = true,
+			auto_save = true,
+			pre_save_cmds = {
+				function()
+					require("neo-tree.sources.manager").close_all()
+				end,
+			},
+			suppressed_dirs = { "~/", "~/code", "/", "~/Downloads", "~/Documents", "~/Desktop" },
+			use_git_branch = true,
+		},
+	},
+	{
+		"chentoast/marks.nvim",
+		event = "VeryLazy",
+		opts = {},
+	},
+	{ -- scrolling notification view
+		"j-hui/fidget.nvim",
+		opts = {},
+		config = function()
+			vim.ui.select = require("fastaction").select
+		end,
 	},
 	{
 		"Chaitanyabsprip/fastaction.nvim",
