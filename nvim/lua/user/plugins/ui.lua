@@ -128,4 +128,10 @@ return {
 		---@type FastActionConfig
 		opts = {},
 	},
+	{
+		"catgoose/nvim-colorizer.lua",
+		event = "BufReadPre",
+		opts = {},
+	},
+	"HiPhish/rainbow-delimiters.nvim",
 }
