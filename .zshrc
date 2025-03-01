@@ -18,16 +18,18 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(
 	git
 	git-prompt
+	git-flow
 	vi-mode
 	dotnet
 	docker
 	npm
 	bgnotify
+	macos
 	sudo
 	colored-man-pages
 	wd
 	zsh-autosuggestions
- 	fast-syntax-highlighting
+ 	zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -38,6 +40,11 @@ bindkey -v
 setopt INC_APPEND_HISTORY
 export HISTFILE=~/.zsh_history
 export HISTSIZE=10000
+
+if command -v yabai > /dev/null 2>&1; then
+	yabai --start-service
+	skhd --start-service
+fi
 
 
 

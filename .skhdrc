@@ -1,0 +1,56 @@
+# focus window
+lcmd - h : yabai -m window --focus west 
+lcmd - j : yabai -m window --focus south 
+lcmd - k : yabai -m window --focus north 
+lcmd - l : yabai -m window --focus east 
+
+# move window
+shift + lcmd - h : yabai -m window --focus west 
+shift + lcmd - j : yabai -m window --focus south 
+shift + lcmd - k : yabai -m window --focus north 
+shift + lcmd - l : yabai -m window --focus east 
+shift + lcmd - left : yabai -m window --resize left:100 
+shift + lcmd - up : yabai -m window --resize top:100
+shift + lcmd - down : yabai -m window --resize bottom:100
+shift + lcmd - right : yabai -m window --resize right:100
+shift + lcmd - space : yabai -m window --toggle float
+lcmd - t : yabai -m window --toggle sticky
+lcmd - n : yabai -m window --minimize
+lcmd - m : yabai -m window --maximize
+lcmd - f : yabai -m window --toggle fullscreen
+
+# focus spaces
+lcmd - left : yabai -m space --focus prev || yabai -m space --focus last
+lcmd - left : yabai -m space --focus next || yabai -m space --focus first
+lcmd - 1 : yabai -m space --focus 1
+lcmd - 2 : yabai -m space --focus 2
+lcmd - 3 : yabai -m space --focus 3
+lcmd - 4 : yabai -m space --focus 4
+lcmd - 5 : yabai -m space --focus 5
+lcmd - 6 : yabai -m space --focus 6
+lcmd - 7 : yabai -m space --focus 7
+lcmd - 8 : yabai -m space --focus 8
+lcmd - 9 : yabai -m space --focus 9
+
+# move spaces
+shift + lcmd - 1 : yabai -m window --space 1
+shift + lcmd - 2 : yabai -m window --space 2
+shift + lcmd - 3 : yabai -m window --space 3
+shift + lcmd - 4 : yabai -m window --space 4
+shift + lcmd - 5 : yabai -m window --space 5
+shift + lcmd - 6 : yabai -m window --space 6
+shift + lcmd - 7 : yabai -m window --space 7
+shift + lcmd - 8 : yabai -m window --space 8
+shift + lcmd - 9 : yabai -m window --space 9
+
+# focus display
+ctrl + lcmd - j : yabai -m display --focus next 
+ctrl + lcmd - k : yabai -m display --focus prev 
+
+# move display
+lcmd - o : yabai -m window --display next
+lcmd + shift - o : yabai -m window --display prev
+
+# extras
+lcmd - enter : ghostty
+shift + lcmd - q : yabai --stop-service
