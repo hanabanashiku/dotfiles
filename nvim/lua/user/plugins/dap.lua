@@ -93,15 +93,24 @@ return {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"Issafalcon/neotest-dotnet",
+			{
+				"marilari88/neotest-vitest",
+				branch = "main",
+			},
 		},
-		config = function(config)
+		config = function()
 			require("neotest").setup({
 				adapters = {
 					require("neotest-dotnet")({
+						dap = {
+							args = { justMyCode = false },
+						},
+						discovery_root = "solution",
 						dotnet_additional_args = {
 							'--environment DiffEngine_ToolOrder="Neovim,Rider,Vim,VisualStudioCode"',
 						},
 					}),
+					require("neotest-vitest"),
 				},
 
 				icons = {
@@ -121,3 +130,4 @@ return {
 		end,
 	},
 }
+

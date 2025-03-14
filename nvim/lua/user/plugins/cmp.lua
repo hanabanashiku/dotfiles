@@ -28,6 +28,13 @@ return {
 				ghost_text = { enabled = false },
 			},
 
+			cmdline = {
+				keymap = { preset = "enter" },
+				completion = {
+					menu = { auto_show = false },
+				},
+			},
+
 			appearance = {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "normal",

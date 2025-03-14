@@ -3,7 +3,6 @@ return {
 	{
 		"williamboman/mason.nvim",
 		opts = {
-
 			registries = {
 				"github:mason-org/mason-registry",
 				"github:crashdummyy/mason-registry",
@@ -16,20 +15,24 @@ return {
 			automatic_installation = true,
 			ensure_installed = {
 				"lua_ls",
-				"clangd",
+				"html",
 				"cssls",
 				"emmet_ls",
+				"tailwindcss",
 				"jsonls",
+				"yamlls",
 				"ts_ls",
 				"pyright",
-				-- "sqlls",
-				"lemminx",
-				"yamlls",
 				"svelte",
+				"bashls",
+				"powershell_es",
 			},
 		},
 		config = function()
 			require("mason-lspconfig").setup_handlers({
+				function(server_name)
+					require("lspconfig")[server_name].setup({})
+				end,
 				["lua_ls"] = function()
 					require("lspconfig").lua_ls.setup({
 						settings = {
@@ -45,6 +48,14 @@ return {
 								},
 							},
 						},
+					})
+				end,
+				["html"] = function()
+					local capabilities = vim.lsp.protocol.make_client_capabilities()
+					capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+					require("lspconfig").html.setup({
+						capabilities = capabilities,
 					})
 				end,
 				["jsonls"] = function()
@@ -75,10 +86,9 @@ return {
 
 			ensure_installed = {
 				"roslyn",
-				-- "rzls",
+				"rzls",
 				"csharpier",
 				"prettier",
-				"eslint-lsp",
 				"sqlfmt",
 				"rustywind",
 				"stylua",

@@ -133,5 +133,5 @@ return {
 		event = "BufReadPre",
 		opts = {},
 	},
-	"HiPhish/rainbow-delimiters.nvim",
+	-- "HiPhish/rainbow-delimiters.nvim",
 }
