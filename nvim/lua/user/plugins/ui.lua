@@ -47,23 +47,20 @@ return {
 			options = {
 				theme = "catppuccin",
 			},
-			extensions = { "aerial", "neo-tree", "nvim-dap-ui", "trouble" },
+			extensions = { "neo-tree", "nvim-dap-ui", "trouble" },
 			sections = {
 				lualine_a = { "mode" },
-				lualine_b = { "branch", "diff", "diagnostics" },
-				lualine_c = {},
+				lualine_b = { "branch", "diff" },
+				lualine_c = {
+					{
+						"diagnostics",
+						sources = { "nvim_workspace_diagnostic" },
+					},
+				},
 				lualine_x = { "fileformat", "filetype" },
 				lualine_y = {},
 				lualine_z = { "location", "searchcount" },
 			},
-		},
-	},
-	{
-		"stevearc/aerial.nvim",
-		opts = {},
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-tree/nvim-web-devicons",
 		},
 	},
 
@@ -91,7 +88,10 @@ return {
 	},
 	{
 		"folke/trouble.nvim",
-		opts = {},
+		opts = {
+			warn_no_results = false,
+			open_no_results = true,
+		},
 		cmd = "Trouble",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
@@ -133,5 +133,5 @@ return {
 		event = "BufReadPre",
 		opts = {},
 	},
-	-- "HiPhish/rainbow-delimiters.nvim",
+	"HiPhish/rainbow-delimiters.nvim",
 }

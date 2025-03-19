@@ -113,6 +113,15 @@ return {
 					require("neotest-vitest"),
 				},
 
+				diagnostic = {
+					enabled = true,
+					severity = 1,
+				},
+				status = {
+					enabled = true,
+					virtual_text = true,
+					signs = true,
+				},
 				icons = {
 					expanded = "",
 					child_prefix = "",
@@ -130,4 +139,3 @@ return {
 		end,
 	},
 }
-
