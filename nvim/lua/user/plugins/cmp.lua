@@ -14,7 +14,6 @@ return {
 		opts = {
 			keymap = {
 				preset = "enter",
-				["<S-k>"] = { "show_signature" },
 				["<C-k>"] = { "fallback" },
 				["<Esc>"] = { "hide_signature", "fallback" },
 			},

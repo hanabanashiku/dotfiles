@@ -18,7 +18,31 @@ return {
 			close_if_last_window = true,
 			enable_cursor_hijack = true,
 			use_libuv_file_watcher = true,
+			source_selector = {
+				winbar = true,
+				statusline = false,
+				show_scrolled_off_parent_node = false,
+				sources = {
+					{
+						source = "filesystem",
+						display_name = " 󰉓 Files ",
+					},
+					{
+						source = "buffers",
+						display_name = " 󰈚 Buffers",
+					},
+					{
+						source = "git_status",
+						display_name = " 󰊢 Git ",
+					},
+				},
+			},
 			filesystem = {
+				always_show = {
+					".config",
+					".editorconfig",
+					".devcontainer",
+				},
 				never_show = {
 					".DS_Store",
 					"thumbs.db",
@@ -64,6 +88,36 @@ return {
 		},
 	},
 
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			cmdline = {
+				view = "cmdline",
+			},
+			lsp = {
+				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+				override = {
+					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+					["vim.lsp.util.stylize_markdown"] = true,
+					["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+				},
+			},
+			-- you can enable a preset for easier configuration
+			presets = {
+				bottom_search = true, -- use a classic bottom cmdline for search
+				command_palette = false, -- position the cmdline and popupmenu together
+				long_message_to_split = true, -- long messages will be sent to a split
+				inc_rename = false, -- enables an input dialog for inc-rename.nvim
+				lsp_doc_border = false, -- add a border to hover docs and signature help
+			},
+		},
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
+	},
+
 	-- Buffer management
 	{
 		"mrjones2014/smart-splits.nvim",
@@ -72,15 +126,18 @@ return {
 	"famiu/bufdelete.nvim",
 
 	-- Code-aware
-	{ -- breadcrumbs
-		"utilyre/barbecue.nvim",
-		name = "barbecue",
-		version = "*",
+	{
+		"Bekaboo/dropbar.nvim",
 		dependencies = {
-			"SmiteshP/nvim-navic",
-			"nvim-tree/nvim-web-devicons",
+			"nvim-telescope/telescope-fzf-native.nvim",
+			build = "make",
 		},
-		opts = {},
+		config = function()
+			local dropbar_api = require("dropbar.api")
+			vim.keymap.set("n", "<Leader>;", dropbar_api.pick, { desc = "Pick symbols in winbar" })
+			vim.keymap.set("n", "[;", dropbar_api.goto_context_start, { desc = "Go to start of current context" })
+			vim.keymap.set("n", "];", dropbar_api.select_next_context, { desc = "Select next context" })
+		end,
 	},
 	{ -- Show nested scopes
 		"nvim-treesitter/nvim-treesitter-context",

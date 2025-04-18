@@ -162,6 +162,7 @@ return {
 				go = { "gofmt" },
 				sh = { "shfmt" },
 				sql = { "sqlfmt" },
+				py = { "black" }
 			},
 			format_on_save = function(bufnr)
 				-- Disable with a global or buffer-local variable
