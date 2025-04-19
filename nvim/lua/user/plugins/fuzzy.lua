@@ -1,110 +1,91 @@
 return {
 	{
-		"lewis6991/gitsigns.nvim",
-		opts = {},
-		keys = {
-			{
-				"<leader>gj",
-				function()
-					require("gitsigns").nav_hunk("next")
-				end,
-				desc = "Next hunk",
-			},
-			{
-				"<leader>gk",
-				function()
-					require("gitsigns").nav_hunk("prev")
-				end,
-				desc = "Previous hunk",
-			},
-			{
-				"<leader>gB",
-				function()
-					require("gitsigns").blame_line()
-				end,
-				desc = "Blame line",
-			},
-			{
-				"<leader>gp",
-				function()
-					require("gitsigns").preview_hunk()
-				end,
-				desc = "Preview hunk",
-			},
-			{
-				"<leader>gr",
-				function()
-					require("gitsigns").reset_hunk()
-				end,
-				desc = "Reset hunk",
-			},
-			{
-				"<leader>gR",
-				function()
-					require("gitsigns").reset_buffer()
-				end,
-				desc = "Reset buffer",
-			},
-			{
-				"<leader>gs",
-				function()
-					require("gitsigns").stage_hunk()
-				end,
-				desc = "Stage hunk",
-			},
-			{
-				"<leader>gd",
-				function()
-					require("gitsigns").diffthis()
-				end,
-				desc = "Diff this",
-			},
+		"nvim-telescope/telescope.nvim",
+		version = "0.1.8",
+		dependencies = {
+			{ "nvim-lua/plenary.nvim" },
 		},
-	},
-	{
-		"akinsho/git-conflict.nvim",
-		version = "*",
-		config = true,
 		opts = {
-			default_mappings = false,
+			defaults = {
+				file_ignore_patterns = {
+					"node_modules",
+					"bin",
+					"obj",
+					".cache",
+					".parcel_cache",
+					".git",
+					".idea",
+					".DS_Store",
+				},
+			},
 		},
 		keys = {
+			{
+				"<leader>ff",
+				function()
+					require("telescope.builtin").find_files({
+						hidden = true,
+						no_ignore = false,
+					})
+				end,
+				desc = "Find files",
+			},
+			{
+				"<leader>fw",
+				function()
+					require("telescope.builtin").live_grep()
+				end,
+				desc = "Find words",
+			},
+			{
+				"<leader>fb",
+				function()
+					require("telescope.builtin").buffers()
+				end,
+				desc = "Find buffers",
+			},
+			{
+				"<leader>fo",
+				function()
+					require("telescope.builtin").oldfiles()
+				end,
+				desc = "Find history",
+			},
+			{
+				"<leader>fk",
+				function()
+					require("telescope.builtin").keymaps()
+				end,
+				desc = "Find keymaps",
+			},
+			{
+				"<leader>gt",
+				function()
+					require("telescope.builtin").git_status()
+				end,
+				desc = "Git status",
+			},
 			{
 				"<leader>gc",
-				"<cmd>GitConflictListQf<cr>",
-				desc = "List conflicts",
+				function()
+					require("telescope.builtin").git_commits()
+				end,
+				desc = "Git commits",
 			},
 			{
-				"co",
-				"<Plug>(git-conflict-ours)",
-				desc = "Choose ours",
+				"<leader>gf",
+				function()
+					require("telescope.builtin").git_files()
+				end,
+				desc = "Git files",
 			},
 			{
-				"ct",
-				"<Plug>(git-conflict-theirs)",
-				desc = "Choose theirs",
-			},
-			{
-				"cb",
-				"<Plug>(git-conflict-both)",
-				desc = "Choose both",
-			},
-			{
-				"c0",
-				"<Plug>(git-conflict-none)",
-				desc = "Choose none",
-			},
-			{
-				"[x",
-				"<Plug>(git-conflict-prev-conflict)",
-				desc = "Previous conflict",
-			},
-			{
-				"]x",
-				"<Plug>(git-conflict-next-conflict)",
-				desc = "Next conflict",
+				"<leader>gb",
+				function()
+					require("telescope.builtin").git_branches()
+				end,
+				desc = "Git branches",
 			},
 		},
 	},
-	"tpope/vim-fugitive",
 }
