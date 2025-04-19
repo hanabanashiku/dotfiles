@@ -46,9 +46,40 @@ return {
 			local augend = require("dial.augend")
 			require("dial.config").augends:register_group({
 				default = {
-					augend.constant.alias.bool,
+					augend.integer.alias.decimal,
 					augend.integer.alias.hex,
+					augend.date.alias["%m/%d/%Y"],
+					augend.constant.alias.bool,
+					augend.constant.alias.alpha,
 				},
+				csharp = {
+					augend.constant.new({ elements = { "public", "protected", "private" }, cyclic = true, word = true }),
+					augend.constant.new({ elements = { "virtual", "abstract" }, cyclic = true, word = true }),
+				},
+			})
+
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function()
+					local filetype = vim.bo.filetype
+					if filetype == "cs" then
+						vim.api.nvim_buf_set_keymap(
+							0,
+							"n",
+							"<C-a>",
+							require("dial.map").inc_normal("csharp"),
+							{ noremap = true }
+						)
+						vim.api.nvim_buf_set_keymap(
+							0,
+							"n",
+							"<C-a>",
+							require("dial.map").inc_normal("csharp"),
+							{ noremap = true }
+						)
+					end
+				end,
+				pattern = "*",
+				desc = "Register C# augends",
 			})
 		end,
 	},

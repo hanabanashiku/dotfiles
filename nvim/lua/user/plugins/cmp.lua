@@ -9,8 +9,6 @@ return {
 		},
 		version = "*",
 
-		---@module 'blink.cmp'
-		---@type blink.cmp.Config
 		opts = {
 			keymap = {
 				preset = "enter",
@@ -28,17 +26,29 @@ return {
 			},
 
 			cmdline = {
-				keymap = { preset = "enter" },
+				keymap = { preset = "cmdline" },
 				completion = {
-					menu = { auto_show = false },
+					menu = { auto_show = true },
+					ghost_text = { enabled = false },
+					list = {
+						selection = {
+							preselect = false,
+						},
+					},
 				},
 			},
 
+			fuzzy = {
+				sorts = {
+					"exact",
+					"score",
+					"sort_text",
+				},
+			},
 			appearance = {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "normal",
 			},
-
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer", "git" },
 				providers = {

@@ -56,13 +56,6 @@ vim.keymap.set("n", "<leader><leader>j", require("smart-splits").swap_buf_down)
 vim.keymap.set("n", "<leader><leader>k", require("smart-splits").swap_buf_up)
 vim.keymap.set("n", "<leader><leader>l", require("smart-splits").swap_buf_right)
 
--- Explorer
-vim.keymap.set("n", "<leader>o", "<cmd>Neotree toggle reveal<CR>")
-vim.keymap.set("n", "<leader>e", "<cmd>Neotree focus<CR>")
-vim.keymap.set("n", "<leader>ls", "<cmd>Trouble symbols toggle focus=false<cr>")
-vim.keymap.set("n", "<leader>lo", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>")
-vim.keymap.set("n", "<leader>lO", "<cmd>Trouble diagnostics toggle<cr>")
-
 -- DAP
 local dap = require("dap")
 local dapui = require("dapui")
@@ -91,66 +84,66 @@ vim.keymap.set("n", "<leader>dk", dapui.eval)
 
 -- LSP
 local preview = require("goto-preview")
--- vim.api.nvim_create_autocmd("LspAttach", {
--- 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
--- 	callback = function(ev)
--- 		local opts = { buffer = ev.buf, remap = false }
---
--- 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
--- 		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
--- 		vim.keymap.set("n", "go", vim.lsp.buf.type_definition, opts)
--- 		vim.keymap.set("n", "gi", "<cmd>Trouble lsp_implementations toggle focus=true<cr>")
--- 		vim.keymap.set("n", "gr", "<cmd>Trouble lsp_references toggle focus=true<cr>")
--- 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
--- 		vim.keymap.set("n", "<C-S-k>", preview.goto_preview_definition, opts)
--- 		vim.keymap.set("n", "<leader>lf", function()
--- 			require("conform").format()
--- 		end)
--- 		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
--- 		vim.keymap.set("n", "<leader>la", function()
--- 			require("fastaction").code_action()
--- 		end, opts)
--- 		vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, opts)
--- 		vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
--- 		vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
--- 		vim.keymap.set("n", "]e", function()
--- 			vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
--- 		end, opts)
--- 		vim.keymap.set("n", "[e", function()
--- 			vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
--- 		end, opts)
--- 		vim.keymap.set("n", "<leader>/", function()
--- 			require("Comment.api").toggle.linewise.current()
--- 		end, opts)
--- 		vim.keymap.set(
--- 			"v",
--- 			"<leader>/",
--- 			"<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
--- 			opts
--- 		)
--- 		vim.keymap.set(
--- 			"v",
--- 			"<leader>?",
--- 			"<esc><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<cr>",
--- 			opts
--- 		)
---
--- 		if vim.bo[0].filetype == "cs" then
--- 			for _, client in pairs(vim.lsp.get_clients()) do
--- 				if client.name == "omnisharp" or client.name == "roslyn" then
--- 					local tokenModifiers = client.server_capabilities.semanticTokensProvider.legend.tokenModifiers
--- 					for i, v in ipairs(tokenModifiers) do
--- 						tokenModifiers[i] = v:gsub(" ", "_")
--- 					end
--- 					local tokenTypes = client.server_capabilities.semanticTokensProvider.legend.tokenTypes
--- 					for i, v in ipairs(tokenTypes) do
--- 						tokenTypes[i] = v:gsub(" ", "_")
--- 					end
--- 				end
--- 			end
--- 		end
--- 	end,
--- })
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+	callback = function(ev)
+		local opts = { buffer = ev.buf, remap = false }
+
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+		vim.keymap.set("n", "go", vim.lsp.buf.type_definition, opts)
+		vim.keymap.set("n", "gi", "<cmd>Trouble lsp_implementations toggle focus=true<cr>")
+		vim.keymap.set("n", "gr", "<cmd>Trouble lsp_references toggle focus=true<cr>")
+		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+		vim.keymap.set("n", "<C-S-k>", preview.goto_preview_definition, opts)
+		vim.keymap.set("n", "<leader>lf", function()
+			require("conform").format()
+		end)
+		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
+		vim.keymap.set("n", "<leader>la", function()
+			require("fastaction").code_action()
+		end, opts)
+		vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, opts)
+		vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+		vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+		vim.keymap.set("n", "]e", function()
+			vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+		end, opts)
+		vim.keymap.set("n", "[e", function()
+			vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+		end, opts)
+		vim.keymap.set("n", "<leader>/", function()
+			require("Comment.api").toggle.linewise.current()
+		end, opts)
+		vim.keymap.set(
+			"v",
+			"<leader>/",
+			"<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
+			opts
+		)
+		vim.keymap.set(
+			"v",
+			"<leader>?",
+			"<esc><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<cr>",
+			opts
+		)
+
+		if vim.bo[0].filetype == "cs" then
+			for _, client in pairs(vim.lsp.get_clients()) do
+				if client.name == "omnisharp" or client.name == "roslyn" then
+					local tokenModifiers = client.server_capabilities.semanticTokensProvider.legend.tokenModifiers
+					for i, v in ipairs(tokenModifiers) do
+						tokenModifiers[i] = v:gsub(" ", "_")
+					end
+					local tokenTypes = client.server_capabilities.semanticTokensProvider.legend.tokenTypes
+					for i, v in ipairs(tokenTypes) do
+						tokenTypes[i] = v:gsub(" ", "_")
+					end
+				end
+			end
+		end
+	end,
+})
 vim.keymap.set("n", "gc", function()
 	require("treesitter-context").go_to_context(vim.v.count1)
 end, { silent = true })

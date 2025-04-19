@@ -63,6 +63,18 @@ return {
 				},
 			},
 		},
+		keys = {
+			{
+				"<leader>o",
+				"<cmd>Neotree toggle reveal<CR>",
+				desc = "Toggle NeoTree",
+			},
+			{
+				"<leader>e",
+				"<cmd>Neotree focus<CR>",
+				desc = "Focus NeoTree",
+			},
+		},
 	},
 	{
 		"nvim-lualine/lualine.nvim",
@@ -94,6 +106,16 @@ return {
 		opts = {
 			cmdline = {
 				view = "cmdline",
+			},
+			messages = {
+				view = "mini",
+				view_error = "notify",
+				view_warn = "mini",
+				view_history = "mini",
+				view_search = "mini",
+			},
+			notify = {
+				view = "mini",
 			},
 			lsp = {
 				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -151,6 +173,23 @@ return {
 		},
 		cmd = "Trouble",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+		keys = {
+			{
+				"<leader>ls",
+				"<cmd>Trouble symbols toggle focus=false<cr>",
+				desc = "Show symbols",
+			},
+			{
+				"<leader>lo",
+				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+				desc = "Show diagnostics for buffer",
+			},
+			{
+				"<leader>lO",
+				"<cmd>Trouble diagnostics toggle<cr>",
+				desc = "Show diagnostics",
+			},
+		},
 	},
 
 	{
@@ -172,13 +211,6 @@ return {
 		"chentoast/marks.nvim",
 		event = "VeryLazy",
 		opts = {},
-	},
-	{ -- scrolling notification view
-		"j-hui/fidget.nvim",
-		opts = {},
-		config = function()
-			vim.ui.select = require("fastaction").select
-		end,
 	},
 	{
 		"Chaitanyabsprip/fastaction.nvim",
