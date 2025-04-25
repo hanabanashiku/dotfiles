@@ -19,7 +19,7 @@ return {
 			completion = {
 				list = {
 					selection = {
-						preselect = true,
+						preselect = false,
 					},
 				},
 				ghost_text = { enabled = false },
@@ -76,15 +76,5 @@ return {
 		config = function()
 			require("luasnip.loaders.from_vscode").lazy_load()
 		end,
-	},
-
-	{
-		"echasnovski/mini.pairs",
-		version = "*",
-		opts = {},
-	},
-	{
-		"nmac427/guess-indent.nvim",
-		opts = {},
-	},
+	}
 }

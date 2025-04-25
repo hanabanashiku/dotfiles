@@ -83,4 +83,13 @@ return {
 			})
 		end,
 	},
+	{
+		"echasnovski/mini.pairs",
+		version = "*",
+		opts = {},
+	},
+	{
+		"nmac427/guess-indent.nvim",
+		opts = {},
+	},
 }

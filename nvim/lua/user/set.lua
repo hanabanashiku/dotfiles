@@ -18,6 +18,7 @@ vim.opt.undofile = true
 
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
+vim.opt.conceallevel = 0
 
 vim.opt.scrolloff = 8
 vim.opt.updatetime = 750
@@ -30,4 +31,4 @@ vim.opt.spell = true
 vim.opt.spelllang = { "en_us" }
 
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-vim.cmd("set formatoptions-=cro")
+vim.api.nvim_command("autocmd FileType * set formatoptions-=co")
