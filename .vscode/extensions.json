@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "vscodevim.vim",
+        "dracula-theme.theme-dracula",
+        "vscode-icons-team.vscode-icons",
+        "ms-vscode-remote.remote-containers"
+    ]
+}
