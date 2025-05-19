@@ -223,4 +223,21 @@ return {
 		opts = {},
 	},
 	"HiPhish/rainbow-delimiters.nvim",
+	{
+		"mcastorina/markdown-preview.nvim",
+		commit = "5ce083a",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		ft = { "markdown" },
+		build = "cd app && npm install",
+		init = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+		end,
+		keys = {
+			{
+				"<leader>md",
+				"<cmd>MarkdownPreviewToggle<CR>",
+				desc = "Markdown Preview",
+			},
+		},
+	},
 }
