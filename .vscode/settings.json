@@ -1,5 +1,5 @@
 {
-    "workbench.colorTheme": "Dracula Purple",
+    "workbench.colorTheme": "Dracula Theme Soft",
     "workbench.iconTheme": "vscode-icons",
     "terminal.integrated.defaultProfile.linux": "zsh",
     "csharp.preview.improvedLaunchExperience": true,
@@ -201,16 +201,16 @@
             "before": [
                 "J"
             ],
-            "commands"[
-                ":m '>+1<CR>gv=gv"
+            "commands": [
+                ":m '>+1"
             ]
         },
         {
             "before": [
                 "K"
             ],
-            "commands"[
-                ":m '<-2<CR>gv=gv"
+            "commands": [
+                ":m '<-2"
             ]
         },
         {

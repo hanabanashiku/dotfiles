@@ -1,6 +1,7 @@
-source util.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/util.sh"
 
-if ! command -v omz &> /dev/null; then
+if ! command -v omz > /dev/null 2>&1; then
     echo "Installing oh-my-zsh"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
@@ -10,7 +11,7 @@ if ! command -v omz &> /dev/null; then
 
     # install theme
     git clone https://github.com/JannoTjarks/catppuccin-zsh.git
-    mkdir "$HOME/.oh-my-zsh/themes/catppuccin-flavors"
+    mkdir -p "$HOME/.oh-my-zsh/themes/catppuccin-flavors"
     mv catppuccin-zsh/catppuccin.zsh-theme "$HOME/.oh-my-zsh/themes/"
     mv catppuccin-zsh/catppuccin-flavors/* "$HOME/.oh-my-zsh/themes/catppuccin-flavors"
 fi
